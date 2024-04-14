@@ -1,0 +1,277 @@
+{% extends 'FooterHeader.html.twig' %}
+
+{% block title %}
+    <title>New Recette</title>
+{% endblock %}
+
+{% block body %}
+    <style>
+     /* Utilisation des grilles CSS */
+    .recette-form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 600px;
+        margin: -59px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        
+    }
+
+    .recette-form h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #333;
+    }
+
+    .recette-form .form-group {
+        margin-bottom: 20px;
+        
+    }
+
+    .recette-label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #555;
+        display: flex; /* Add flex display to align icon and label */
+        align-items: center; /* Center items vertically */
+    }
+
+    .recette-label img {
+        margin-right: 10px; /* Adjust spacing between icon and label */
+    }
+
+    .form-control {
+        border: 1px solid #f14141;
+        border-radius: 5px;
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus,
+    .form-control:hover {
+        border-color: #007bff;
+    }
+
+    .btn-primary {
+        border-radius: 5px;
+        padding: 12px 24px;
+        background-color: #a5dc86;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Amélioration de l'accessibilité */
+   .recette-form .text-danger {
+    color: #e74a3b !important; /* Rouge */
+}
+li {
+    list-style: none;
+    color: #e74a3b !important;
+}
+    /* Autres styles */
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+    .aa {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Centre l'image verticalement */
+        height: 139px; /* Vous pouvez ajuster la hauteur du conteneur selon vos besoins */
+    }
+
+    .aa img {
+        max-width: 100%;
+        max-height: 100%; /* Ajuste la taille de l'image en fonction de la hauteur du conteneur */
+        vertical-align: middle; /* Alignement vertical */
+    }
+     .icon-red {
+        color: #f00; /* Rouge */
+        margin-right: 10px; /* Ajout de marge à droite pour l'espace */
+    }
+     h1 {
+        margin: 20px 0; /* Ajoute une marge en haut et en bas du titre */
+        font-size: 28px;
+        color: #f00; /* Rouge */
+        text-align: center; /* Centre le texte */
+    }
+.add-remove-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.add-remove-buttons button {
+    border-radius: 5px;
+    padding: 12px 24px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 48%; /* Ajustez la largeur selon vos besoins */
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.add-remove-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.icon-red {
+    color: #ffb6b6; /* Rouge */
+    margin-right: 10px; /* Ajout de marge à droite pour l'espace */
+}
+
+    </style>
+    <main>
+        <article>
+                    <section class="hero" id="home">
+            <div class="aa">
+                <img src="{{ asset('assets/images/add-recipe-background-header-img.png') }}" >
+            </div>
+            <div class="container">
+    
+        <div class="row">
+
+            <div class="col-md-8 offset-md-2">
+                {{ form_start(form, {'attr': {'class': 'recette-form', 'name': 'recetteForm'}}) }}
+                <div class="form-group">
+    <label for="titre" class="recette-label"><i class="fas fa-heading icon-red"></i> Titre</label>
+    {{ form_widget(form.titre, {'attr': {'class': 'form-control recette-titre', 'placeholder' : 'Titre' }}) }}
+    {{ form_errors(form.titre,{'attr':{'class':'text-danger'}}) }}
+</div>
+<div class="form-group">
+    <label for="description" class="recette-label"><i class="fas fa-file-alt icon-red"></i> Description</label>
+    {{ form_widget(form.description, {'attr': {'class': 'form-control recette-description', 'placeholder' : 'description' }}) }}
+    {{ form_errors(form.description,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+
+
+
+<div id="ingredients-container">
+    <!-- Champs d'ingrédients initiaux -->
+    <div class="form-group">
+        <label for="ingredients" class="recette-label"><i class="fas fa-list icon-red"></i> Ingrédients</label>
+        {{ form_widget(form.ingredients, {'attr': {'class': 'form-control recette-ingredients', 'placeholder' : 'Ingrédients' }}) }}
+        {{ form_errors(form.ingredients,{'attr':{'class':'text-danger'}}) }}
+    </div>
+</div>
+<div class="add-remove-buttons">
+    <button type="button" id="add-ingredient" class="btn btn-primary">
+        <i class="fas fa-plus icon-red"></i> Ajouter un ingrédient
+    </button>
+    <button type="button" id="remove-ingredient" class="btn btn-danger">
+        <i class="fas fa-minus icon-red"></i> Supprimer le dernier ingrédient
+    </button>
+</div>
+<div id="etape-container">
+        <div class="form-group">
+            <label for="etape1" class="recette-label"><i class="fas fa-list-ol icon-red"></i> Étape 1</label>
+            {{ form_widget(form.etape, {'attr': {'class': 'form-control recette-etape', 'placeholder' : 'étape 1' }}) }}
+            {{ form_errors(form.etape,{'attr':{'class':'text-danger'}}) }}
+        </div>
+    </div>
+   <div class="add-remove-buttons">
+    <button type="button" id="add-etape" class="btn btn-primary">
+        <i class="fas fa-plus icon-red"></i> Ajouter une étape
+    </button>
+    <button type="button" id="remove-etape" class="btn btn-danger">
+        <i class="fas fa-minus icon-red"></i> Supprimer la dernière étape
+    </button>
+</div>
+
+<div class="form-group">
+    <label for="image" class="recette-label"><i class="fas fa-image icon-red"></i> Image</label>
+    {{ form_widget(form.image, {'attr': {'class': 'form-control recette-image'}}) }}
+    {{ form_errors(form.image,{'attr':{'class':'text-danger'}}) }}
+</div>
+<div class="form-group">
+    <label for="video" class="recette-label"><i class="fas fa-video icon-red"></i> Vidéo</label>
+    {{ form_widget(form.video, {'attr': {'class': 'form-control recette-video'}}) }}
+    {{ form_errors(form.video,{'attr':{'class':'text-danger'}}) }} 
+</div>
+                <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+                {{ form_end(form) }}
+
+                <a href="{{ path('app_recette_index') }}">Back to list</a>
+            </div>
+        </div>
+    </div>
+    </section>
+</article>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addIngredientButton = document.getElementById('add-ingredient');
+        const removeIngredientButton = document.getElementById('remove-ingredient');
+        const ingredientsContainer = document.getElementById('ingredients-container');
+
+        let ingredientCount = 1; // Compteur pour les champs d'ingrédients ajoutés
+
+        addIngredientButton.addEventListener('click', function () {
+            const newIngredientField = document.createElement('div');
+            newIngredientField.innerHTML = `
+                <div class="form-group">
+                    <label for="ingredients${ingredientCount}" class="recette-label"><i class="fas fa-list icon-red"></i> Ingrédients</label>
+                    <input type="text" id="ingredients${ingredientCount}" name="ingredients[]" class="form-control recette-ingredients" placeholder="Ingrédients">
+                </div>
+            `;
+            ingredientsContainer.appendChild(newIngredientField);
+            ingredientCount++;
+        });
+
+        removeIngredientButton.addEventListener('click', function () {
+            const lastIngredientField = ingredientsContainer.lastElementChild;
+            if (lastIngredientField && ingredientCount > 1) {
+                ingredientsContainer.removeChild(lastIngredientField);
+                ingredientCount--;
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+            const addEtapeButton = document.getElementById('add-etape');
+            const removeEtapeButton = document.getElementById('remove-etape');
+            const etapeContainer = document.getElementById('etape-container');
+
+            let etapeCount = 1; // Compteur pour les champs d'étapes ajoutés
+
+            addEtapeButton.addEventListener('click', function () {
+                const newEtapeField = document.createElement('div');
+                newEtapeField.innerHTML = `
+                    <div class="form-group">
+                        <label for="etape${etapeCount}" class="recette-label"><i class="fas fa-list icon-red"></i> Étape ${etapeCount + 1}</label>
+                        <input type="text" id="etape${etapeCount}" name="etape[]" class="form-control recette-etape" placeholder="étape ${etapeCount + 1}">
+                    </div>
+                `;
+                etapeContainer.appendChild(newEtapeField);
+                etapeCount++;
+            });
+
+            removeEtapeButton.addEventListener('click', function () {
+                const lastEtapeField = etapeContainer.lastElementChild;
+                if (lastEtapeField && etapeCount > 1) {
+                    etapeContainer.removeChild(lastEtapeField);
+                    etapeCount--;
+                }
+            });
+        });
+</script>
+{% endblock %}

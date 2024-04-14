@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue dans votre panier {% endblock %}
+
+{% block body %}
+    <h1 class="hello" >Bienvenue dans votre panier</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom du Produit</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Gere</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for panier in paniers %}
+                <tr>
+                    <td>{{ panier.nomProduit }}</td>
+                    <td>{{ panier.quantite }}</td>
+                    <td>{{ panier.prix }}</td>
+                 <td>
+                   <a href="{{ path('app_panier_edit', {'id': panier.id}) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ path('app_panier_delete', {'id': panier.id}) }}" class="btn btn-primary">>Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun produit dans le panier</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total-panier">
+        <p class="total-label">Total du panier : </p>
+        <p class="total-value">{{ totalPanier }}</p>
+        <p class="quantite-label">Quantité totale dans le panier : </p>
+        <p class="quantite-value">{{ quantiteTotalePanier }}</p>
+    </div>
+<div class="new">
+    <a href="{{ path('app_panier_new') }}">Ajouter un produit</a>
+    
+
+</div>
+    <style>
+    .table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+     text-align: center;   
+}
+
+.table th, .table td {
+    padding: 10px;
+    border: 2px solid #B22222; /* Rouge brique */
+}
+
+.table th {
+    background-color: #B22222; /* Rouge brique */
+    color: white;
+}
+
+.total-panier {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #B22222;
+    opacity: 0.8;
+     text-align: center;
+    
+}
+
+.total-label, .quantite-label {
+    font-weight: bold;
+}
+
+.total-value, .quantite-value {
+    color: white;
+   display: inline-block; 
+}
+
+.hello{
+     color: #B22222; 
+    text-align: center; 
+}
+
+
+
+.new{
+ color: #B22222; 
+    text-align: center;    
+}
+</style>
+{% endblock %}

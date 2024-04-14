@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Restaurant{% endblock %}
+
+{% block s %}
+    <title>Modifier Restaurant</title>
+{% endblock %}
+
+{% block body %}
+    <main>
+        <article>
+        
+            <section class="hero" id="home">
+                <h1 class="titre" style="background: linear-gradient(45deg, #DC0101, #8B0303); color: white; padding: 10px;">Modifier Restaurant</h1>
+
+                <div class="form-container"  padding: 20px;">
+            {{ include('restau/_form.html.twig', {'form': form}) }}
+        </div>
+
+
+<a href="{{ path('app_restau_index') }}" style="color: white; text-decoration: none; background-color: red; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-top: 20px;">Back to List</a>
+
+{{ include('restau/_delete_form.html.twig') }}
+            </section>
+        </article>
+    </main>
+
+    <style>
+.titre{
+     text-align: center;
+}
+.form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus,
+    .form-control:hover {
+        border-color: #007bff;
+    }
+
+
+    
+</style>
+{% endblock %}

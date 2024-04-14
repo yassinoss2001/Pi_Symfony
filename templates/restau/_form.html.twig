@@ -1,0 +1,44 @@
+{{ form_start(form, {'attr': {'class': 'restaurant-form', 'name': 'restaurantForm'}}) }}
+<div class="form-group">
+    <label for="nom" class="restaurant-label">Nom</label>
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control restaurant-nom', 'placeholder' : 'Nom' }}) }}
+    {{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+</div>
+<div class="form-group">
+    <label for="speciality" class="restaurant-label">Spécialité</label>
+    {{ form_widget(form.speciality, {'attr': {'class': 'form-control restaurant-speciality', 'placeholder' : 'Spécialité' }}) }}
+    {{ form_errors(form.speciality,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<div class="form-group">
+    <label for="telephone" class="restaurant-label">Téléphone</label>
+    {{ form_widget(form.telephone, {'attr': {'class': 'form-control restaurant-telephone', 'placeholder' : 'Téléphone' }}) }}
+    {{ form_errors(form.telephone,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<div class="form-group">
+    <label for="description" class="restaurant-label">Description</label>
+    {{ form_widget(form.description, {'attr': {'class': 'form-control restaurant-description', 'placeholder' : 'Description' }}) }}
+    {{ form_errors(form.description,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<div class="form-group">
+    <label for="place" class="restaurant-label">Lieu</label>
+    {{ form_widget(form.place, {'attr': {'class': 'form-control restaurant-place', 'placeholder' : 'Lieu' }}) }}
+    {{ form_errors(form.place,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<div class="form-group">
+    <label for="rate" class="restaurant-label">Note</label>
+    {{ form_widget(form.rate, {'attr': {'class': 'form-control restaurant-rate', 'placeholder' : 'Note' }}) }}
+    {{ form_errors(form.rate,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<div class="form-group">
+    <label for="image" class="restaurant-label">Image</label>
+    {{ form_widget(form.image, {'attr': {'class': 'form-control restaurant-image'}}) }}
+    {{ form_errors(form.image,{'attr':{'class':'text-danger'}}) }}
+</div>
+
+<button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Panier{% endblock %}
+
+{% block body %}
+    <style>
+        .custom-border {
+            border: 10px solid #B22222;
+            padding: 20px;
+            margin: 0 auto; /* Pour centrer le cadre horizontalement */
+            width: 600px;
+            height: 500px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Pour centrer verticalement le formulaire */
+        }
+        
+        .HELLO {
+           text-align: center;
+           color: #B22222; 
+        } 
+
+        .centered-form {
+            width: fit-content;
+            
+        }
+    </style>
+
+    <h1 class="HELLO">Edit Panier</h1>
+
+    <div class="custom-border">
+       <div class="centered-form">
+            {{ include('panier/_form.html.twig', {'button_label': 'Update'}) }}
+        </div>
+    </div>
+
+    <div class="HELLO">
+       
+        {{ include('panier/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
