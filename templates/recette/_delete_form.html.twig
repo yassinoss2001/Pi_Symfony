@@ -1,0 +1,5 @@
+<form id="deleteForm" method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
+        <!-- Bouton "Supprimer" qui ouvre la boîte de dialogue -->
+        <button type="button" class="btn" onclick="openConfirmationModal()">Supprimer</button>
+    </form>
