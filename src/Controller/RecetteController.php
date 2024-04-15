@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Recette;
 use App\Form\RecetteType;
 use App\Repository\RecetteRepository;
+use App\Repository\AvisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,30 +108,38 @@ $recette->setIngredients($ingredientsConcat);
         ]);
     }
 
-    #[Route('/{id}', name: 'app_recette_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Recette $recette): Response
-    {
-        // Créer un nouveau formulaire d'avis
-        $avis = new Avis();
-        $avisForm = $this->createForm(AvisType::class, $avis);
-        $avisForm->handleRequest($request);
+    
+#[Route('/{id}', name: 'app_recette_show', methods: ['GET', 'POST'])]
+public function show(Request $request, Recette $recette, AvisRepository $avisRepository): Response
+{
+    // Récupérer les avis associés à cette recette
+    $avisRecette = $avisRepository->findBy(['id_recette' => $recette]);
 
-        if ($avisForm->isSubmitted() && $avisForm->isValid()) {
-            // Associer l'avis à la recette et enregistrer en base de données
-            $avis->setRecette($recette);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($avis);
-            $entityManager->flush();
+    // Créer un nouveau formulaire d'avis
+    $avis = new Avis();
+    $avis->setDate(new \DateTime());
+    $avisForm = $this->createForm(AvisType::class, $avis);
+    $avisForm->handleRequest($request);
 
-            // Rediriger vers la même page après la soumission du formulaire
-            return $this->redirectToRoute('app_recette_show', ['id' => $recette->getId()]);
-        }
+    if ($avisForm->isSubmitted() && $avisForm->isValid()) {
+        // Associer l'avis à la recette et enregistrer en base de données
+        $avis->setIdRecette($recette);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($avis);
+        $entityManager->flush();
 
-        return $this->render('recette/show.html.twig', [
-            'recette' => $recette,
-            'avisForm' => $avisForm->createView(),
-        ]);
+        // Rediriger vers la même page après la soumission du formulaire
+        return $this->redirectToRoute('app_recette_show', ['id' => $recette->getId()]);
     }
+
+    return $this->render('recette/show.html.twig', [
+        'recette' => $recette,
+        'avisForm' => $avisForm->createView(),
+        'avisRecette' => $avisRecette, // Passer les avis à la vue
+    ]);
+}
+
+
 #[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
 {

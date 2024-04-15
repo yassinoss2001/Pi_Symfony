@@ -384,12 +384,18 @@
     {{ include('avis/_form.html.twig', {'form': avisForm}) }}
 
     <!-- Afficher les avis existants -->
-    <h2>Avis</h2>
+    <h2>Avis sur cette recette :</h2>
+
+{% if avisRecette is not empty %}
     <ul>
-        {% for avi in recette.avis %}
-            <li>{{ avi.contenu }}</li>
+        {% for avis in avisRecette %}
+            <li>{{ avis.date|date('Y-m-d') }} - Note : {{ avis.note }} - Commentaire : {{ avis.commentaire }}</li>
         {% endfor %}
     </ul>
+{% else %}
+    <p>Aucun avis pour le moment.</p>
+{% endif %}
+
 
                 <div class="social-links">
                     <p>Share At: </p>
