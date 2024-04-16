@@ -315,10 +315,57 @@
 .modal-buttons button:focus {
     outline: none;
 }
+
+.avis-form-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.avis-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.avis-note, .avis-commentaire {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #256eff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1c4fcf;
+}
+
+.avis-list-container {
+    margin-top: 2rem;
+}
+
+.avis-list {
+    list-style: none;
+    padding: 0;
+}
+
+.avis-list li {
+    margin-bottom: 1rem;
+}
 </style>
 <main>
         <article>
-            <section class="hero" id="home">
+      <section class="section section-divider white cta">
 {% if qrCodeImage is defined and qrCodeImage %}
     <img src="{{ qrCodeImage }}" alt="Code QR pour la recette">
 {% else %}
@@ -379,22 +426,6 @@
     </div>
 </div>
 </div>
-<!-- Afficher le formulaire d'avis -->
-    <h2>Laisser un avis</h2>
-    {{ include('avis/_form.html.twig', {'form': avisForm}) }}
-
-    <!-- Afficher les avis existants -->
-    <h2>Avis sur cette recette :</h2>
-
-{% if avisRecette is not empty %}
-    <ul>
-        {% for avis in avisRecette %}
-            <li>{{ avis.date|date('Y-m-d') }} - Note : {{ avis.note }} - Commentaire : {{ avis.commentaire }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Aucun avis pour le moment.</p>
-{% endif %}
 
 
                 <div class="social-links">
@@ -447,7 +478,42 @@
             </div>
         </div>
     </div>
-    
+     <article>
+
+     <article>
+      <section class="section section-divider white cta">
+<h2>Laisser un avis</h2>
+    <div class="avis-form-wrapper">
+        {{ form_start(avisForm, {'attr': {'class': 'avis-form', 'name': 'avisForm'}}) }}
+        <div class="form-group">
+            <label for="note" class="avis-label"><i class="fas fa-star icon-blue"></i> Note</label>
+            {{ form_widget(avisForm.note, {'attr': {'class': 'form-control avis-note'}}) }}
+            {{ form_errors(avisForm.note, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-group">
+            <label for="commentaire" class="avis-label"><i class="fas fa-comment-alt icon-green"></i> Commentaire</label>
+            {{ form_widget(avisForm.commentaire, {'attr': {'class': 'form-control avis-commentaire', 'rows': 4}}) }}
+            {{ form_errors(avisForm.commentaire, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+        {{ form_end(avisForm) }}
+    </div>
+    <div class="avis-list-container">
+        <h2>Avis sur cette recette :</h2>
+        <div class="avis-list-wrapper">
+            {% if avisRecette is not empty %}
+                <ul class="avis-list">
+                    {% for avis in avisRecette %}
+                        <li>{{ avis.date|date('Y-m-d') }} - Note : {{ avis.note }} - Commentaire : {{ avis.commentaire }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Aucun avis pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+      </section>
+      </article>
 <script>
   window.onload = function() {
         setTimeout(function() {
