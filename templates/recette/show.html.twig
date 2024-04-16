@@ -362,6 +362,24 @@
 .avis-list li {
     margin-bottom: 1rem;
 }
+.avis-list {
+    list-style: none;
+    padding: 0;
+}
+
+.star-rating {
+    font-size: 24px; /* Taille des étoiles */
+    line-height: 1; /* Ajuste l'alignement vertical */
+}
+
+.star-rating span {
+    margin-right: 5px; /* Espacement entre les étoiles */
+}
+
+.note-value {
+    margin-left: 10px; /* Espacement entre les étoiles et la valeur de la note */
+    font-weight: bold; /* Met en gras la valeur de la note */
+}
 </style>
 <main>
         <article>
@@ -501,15 +519,21 @@
     <div class="avis-list-container">
         <h2>Avis sur cette recette :</h2>
         <div class="avis-list-wrapper">
-            {% if avisRecette is not empty %}
-                <ul class="avis-list">
-                    {% for avis in avisRecette %}
-                        <li>{{ avis.date|date('Y-m-d') }} - Note : {{ avis.note }} - Commentaire : {{ avis.commentaire }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Aucun avis pour le moment.</p>
-            {% endif %}
+      {% for avis in avisRecette %}
+        <li>{{ avis.date|date('Y-m-d') }} - Note :
+            <div class="star-rating" style="display: flex;"> <!-- Utilisation de flexbox pour les étoiles horizontales -->
+                {% for i in range(1, 6) %}
+                    {% if i <= avis.note %}
+                        <span>&#x2605;</span> <!-- Étoile pleine -->
+                    {% else %}
+                        <span>&#x2606;</span> <!-- Étoile vide -->
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span class="note-value">{{ avis.note }}/5</span> <!-- Affiche la valeur de la note -->
+            - Commentaire : {{ avis.commentaire }}
+        </li>
+    {% endfor %}
         </div>
     </div>
       </section>

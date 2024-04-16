@@ -118,10 +118,12 @@ public function show(Request $request, Recette $recette, AvisRepository $avisRep
     // Créer un nouveau formulaire d'avis
     $avis = new Avis();
     $avis->setDate(new \DateTime());
+    $avis->setIdRecette($recette);
     $avisForm = $this->createForm(AvisType::class, $avis);
     $avisForm->handleRequest($request);
 
     if ($avisForm->isSubmitted() && $avisForm->isValid()) {
+        
         // Associer l'avis à la recette et enregistrer en base de données
         $avis->setIdRecette($recette);
         $entityManager = $this->getDoctrine()->getManager();

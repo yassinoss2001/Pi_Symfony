@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class AvisType extends AbstractType
 {
@@ -21,10 +22,7 @@ class AvisType extends AbstractType
             'class' => 'App\Entity\User', // Remplacez par le chemin correct vers votre entité User
             'choice_label' => 'nom', // Remplacez 'nom' par le champ que vous voulez afficher dans la liste déroulante
         ])
-        ->add('id_recette', EntityType::class, [
-            'class' => 'App\Entity\Recette', // Remplacez par le chemin correct vers votre entité Recette
-            'choice_label' => 'titre', // Remplacez 'nomRecette' par le champ que vous voulez afficher dans la liste déroulante
-        ])
+       
     ;
 }
 
