@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-details-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .menu-details-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .menu-details-table th, .menu-details-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu-details-table th {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-weight: 600;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-container a {
+            margin: 0 10px;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-back {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="menu-details-container">
+        <h1>Détails du menu</h1>
+
+        <table class="menu-details-table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ menu.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ menu.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ menu.prix }}</td>
+                </tr>
+                <tr>
+                    <th>Calories</th>
+                    <td>{{ menu.calories }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ menu.description }}</td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td><img src="{{ menu.image }}" alt="{{ menu.nom }}" style="max-width: 100%;"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-container">
+            <a href="{{ path('app_menu_index') }}" class="btn btn-back">Back to List</a>
+            <a href="{{ path('app_menu_edit', {'id': menu.id}) }}" class="btn btn-edit">Edit</a>
+            <a href="{{ path('app_menu_delete', {'id': menu.id}) }}" class="btn btn-delete">Delete</a>
+        </div>
+    </div>
+{% endblock %}
