@@ -103,7 +103,7 @@
 }
 .product-detail h2{
     text-transform: capitalize;
-    color: #12263a;
+    color: #f14141;
     padding-bottom: 0.6rem;
 }
 .product-detail p{
@@ -367,18 +367,35 @@
     padding: 0;
 }
 
+/* Styles pour les avis */
+.avis-card {
+       border: 3px solid #ccc;
+    border-radius: 17px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    max-width: 400px; /* Limite la largeur de la carte */
+    margin: 10px auto; /* Centre la carte horizontalement */
+}
+
 .star-rating {
-    font-size: 24px; /* Taille des étoiles */
-    line-height: 1; /* Ajuste l'alignement vertical */
+    font-size: 16px; /* Réduire la taille des étoiles */
+    margin-bottom: 3px; /* Réduire l'espacement entre les étoiles et la note */
 }
 
 .star-rating span {
-    margin-right: 5px; /* Espacement entre les étoiles */
+    color: #ff6b6b; /* Couleur des étoiles */
 }
 
 .note-value {
-    margin-left: 10px; /* Espacement entre les étoiles et la valeur de la note */
-    font-weight: bold; /* Met en gras la valeur de la note */
+    font-weight: bold;
+    margin-bottom: 3px; /* Réduire l'espacement entre la note et le commentaire */
+    font-size: 14px; /* Réduire la taille de la note */
+}
+
+.commentaire {
+    margin-bottom: 8px; /* Réduire l'espacement sous le commentaire */
+    font-size: 14px; /* Réduire la taille du commentaire */
 }
 </style>
 <main>
@@ -517,25 +534,34 @@
         {{ form_end(avisForm) }}
     </div>
     <div class="avis-list-container">
-        <h2>Avis sur cette recette :</h2>
-        <div class="avis-list-wrapper">
-      {% for avis in avisRecette %}
-        <li>{{ avis.date|date('Y-m-d') }} - Note :
-            <div class="star-rating" style="display: flex;"> <!-- Utilisation de flexbox pour les étoiles horizontales -->
-                {% for i in range(1, 6) %}
-                    {% if i <= avis.note %}
-                        <span>&#x2605;</span> <!-- Étoile pleine -->
-                    {% else %}
-                        <span>&#x2606;</span> <!-- Étoile vide -->
-                    {% endif %}
-                {% endfor %}
+    <h2>Avis sur cette recette :</h2>
+    <div class="avis-list-wrapper">
+        {% for avis in avisRecette %}
+            <div class="avis-card">
+                <div><a href="#" class="card-meta-link">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                    {% if avis.idUser is not null %}
+                                        <p class="meta-info">Author: {{ recette.idUser.nom }}</p>
+                                    {% else %}
+                                        <p class="meta-info">Author: Unknown</p>
+                                    {% endif %}
+                                </a></div>
+                <div>{{ avis.date|date('Y-m-d') }}</div>
+                <div class="star-rating" style="display: flex;"> <!-- Utilisation de flexbox pour les étoiles horizontales -->
+                    {% for i in range(1, 6) %}
+                        {% if i <= avis.note %}
+                            <span>&#x2605;</span> <!-- Étoile pleine -->
+                        {% else %}
+                            <span>&#x2606;</span> <!-- Étoile vide -->
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="note-value">{{ avis.note }}/5</div> <!-- Affiche la valeur de la note -->
+                <div class="commentaire">{{ avis.commentaire }}</div>
             </div>
-            <span class="note-value">{{ avis.note }}/5</span> <!-- Affiche la valeur de la note -->
-            - Commentaire : {{ avis.commentaire }}
-        </li>
-    {% endfor %}
-        </div>
+        {% endfor %}
     </div>
+</div>
       </section>
       </article>
 <script>

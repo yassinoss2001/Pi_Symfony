@@ -123,9 +123,12 @@ public function show(Request $request, Recette $recette, AvisRepository $avisRep
     $avisForm->handleRequest($request);
 
     if ($avisForm->isSubmitted() && $avisForm->isValid()) {
-        
+        $note = $request->request->get('note'); // Récupérer la note depuis le champ caché
+
         // Associer l'avis à la recette et enregistrer en base de données
         $avis->setIdRecette($recette);
+        $avis->setNote($note);
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($avis);
         $entityManager->flush();
