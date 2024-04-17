@@ -1,0 +1,64 @@
+{% extends 'backg.html.twig' %}
+{% block css %}
+{{ parent() }}
+<style>
+
+
+</style>
+{% endblock %}
+
+
+
+
+{% block title %}Evennemnt index{% endblock %}
+
+{% block body %}
+    <h1>Liste des evenements</h1>
+<div class="containerr">
+    <table>
+        <thead>
+            <tr>
+                <th>Nom_event</th>
+                <th>Desc_event</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+                <th>Lieu_evenement</th>
+                <th>Nbr_participants</th>
+                <th>Time_debut</th>
+                <th>Time_fin</th>
+                <th>NameResto</th>
+                <th>Image_path</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evennemnt in evennemnts %}
+            <tr>
+                
+                <td>{{ evennemnt.nomEvent }}</td>
+                <td>{{ evennemnt.descEvent }}</td>
+                <td>{{ evennemnt.dateDebut ? evennemnt.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ evennemnt.dateFin ? evennemnt.dateFin|date('Y-m-d') : '' }}</td>
+                <td>{{ evennemnt.lieuEvenement }}</td>
+                <td>{{ evennemnt.NbrParticipants }}</td>
+                <td>{{ evennemnt.TimeDebut ? evennemnt.TimeDebut|date('H:i:s') : '' }}</td>
+                <td>{{ evennemnt.TimeFin ? evennemnt.TimeFin|date('H:i:s') : '' }}</td>
+                <td>{{ evennemnt.NameResto }}</td>
+                <td>{{ evennemnt.imagePath }}</td>
+                 <td>
+                    <a href="{{ path('app_evennemnt_show', {'id': evennemnt.id}) }}" class="btn">Show</a>
+                    <a href="{{ path('app_evennemnt_edit', {'id': evennemnt.id}) }}" class="btn">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <div  class="buttons">
+    <a href="{{ path('app_evennemnt_new') }}"  class="btn">Ajouter un evenement</a>
+    </div>
+{% endblock %}

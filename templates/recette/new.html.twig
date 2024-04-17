@@ -1,0 +1,146 @@
+{% extends 'FooterHeader.html.twig' %}
+
+{% block title %}
+    <title>New Recette</title>
+{% endblock %}
+
+{% block body %}
+    <style>
+     /* Utilisation des grilles CSS */
+    .recette-form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .recette-form h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #333;
+    }
+
+    .recette-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .recette-label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus,
+    .form-control:hover {
+        border-color: #007bff;
+    }
+
+    .btn-primary {
+        border-radius: 5px;
+        padding: 12px 24px;
+        background-color: #f14141;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Amélioration de l'accessibilité */
+    .text-danger {
+        color: #dc3545;
+    }
+
+    /* Autres styles */
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+    .aa {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Centre l'image verticalement */
+        height: 296px; /* Vous pouvez ajuster la hauteur du conteneur selon vos besoins */
+    }
+
+    .aa img {
+        max-width: 100%;
+        max-height: 100%; /* Ajuste la taille de l'image en fonction de la hauteur du conteneur */
+        vertical-align: middle; /* Alignement vertical */
+    }
+    </style>
+    <main>
+        <article>
+            <div class="aa">
+                <img src="{{ asset('assets/images/add-recipe-background-header-img.png') }}" >
+            </div>
+            <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1>Ajouter une nouvelle recette</h1>
+                {{ form_start(form, {'attr': {'class': 'recette-form', 'name': 'recetteForm'}}) }}
+                <div class="form-group">
+                    <label for="titre" class="recette-label">Titre</label>
+                    {{ form_widget(form.titre, {'attr': {'class': 'form-control recette-titre', 'placeholder' : 'Titre' }}) }}
+                    {{ form_errors(form.titre,{'attr':{'class':'text-danger'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="description" class="recette-label">Description</label>
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control recette-description', 'placeholder' : 'description' }}) }}
+                    {{ form_errors(form.description,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="ingredients" class="recette-label">Ingrédients</label>
+                    {{ form_widget(form.ingredients, {'attr': {'class': 'form-control recette-ingredients', 'placeholder' : 'ingredients' }}) }}
+                    {{ form_errors(form.ingredients,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="step" class="recette-label">Étape</label>
+                    {{ form_widget(form.etape, {'attr': {'class': 'form-control recette-etape', 'placeholder' : 'étapes' }}) }}
+                    {{ form_errors(form.etape,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="recette-label">Image</label>
+                    {{ form_widget(form.image, {'attr': {'class': 'form-control recette-image'}}) }}
+                    {{ form_errors(form.image,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="video" class="recette-label">Vidéo</label>
+                    {{ form_widget(form.video, {'attr': {'class': 'form-control recette-video'}}) }}
+                    {{ form_errors(form.video,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+                {{ form_end(form) }}
+
+                <a href="{{ path('app_recette_index') }}">Back to list</a>
+            </section>
+        </article>
+    </main>
+{% endblock %}

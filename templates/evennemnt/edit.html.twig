@@ -1,0 +1,88 @@
+{% extends 'backg.html.twig' %}
+
+{% block css %}
+{{ parent() }}
+<style> 
+/* Form container */
+.form-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center; /* Center the text */
+}
+
+
+/* Form inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Form button */
+.form-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.form-btn:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+{% endblock %}
+
+{% block title %}Edit Evennemnt{% endblock %}
+
+{% block body %}
+    <h1>Mettre à jour évènement</h1>
+
+    <div class="form-container">
+        {{ form_start(form) }}
+        {{ form_row(form.nom_event, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.desc_event, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.date_debut, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.date_fin, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.lieu_evenement, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.Nbr_participants, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.Time_debut, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.Time_fin, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.NameResto, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.image_path, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.user_id, {'attr': {'class': 'form-group'}}) }}
+        <button type="submit" class="form-btn">mettre à jour</button>
+        {{ form_end(form) }}
+    </div>
+    {{ include('evennemnt/_delete_form.html.twig') }}
+
+    <a href="{{ path('app_evennemnt_index') }}">liste des evenements</a>
+
+    
+{% endblock %}
