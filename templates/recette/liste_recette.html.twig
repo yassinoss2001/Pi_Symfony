@@ -1,0 +1,186 @@
+{% extends 'FooterHeader.html.twig' %}
+
+{% block s %}
+    <title>Liste Recettes</title>
+    <link rel="stylesheet" href="{{ asset('path/to/styles.css') }}">
+{% endblock %}
+
+{% block body %}
+<style>
+
+/* styles.css */
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --dark-color: #000;
+}
+
+.recette-list {
+    list-style: none;
+    padding: 0;
+}
+
+.recette-item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.recette-item:hover {
+    background-color: #f9f9f9;
+}
+
+.recette-image {
+    max-width: 100px;
+    margin-right: 10px;
+}
+
+.recette-details {
+    flex: 1;
+}
+
+.recette-title {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.recette-description {
+    margin-bottom: 10px;
+}
+
+.recette-actions {
+    margin-top: 10px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border: none;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-edit {
+    background-color: var(--success-color);
+    margin-right: 10px;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
+}
+
+.btn-delete {
+    background-color: var(--danger-color);
+}
+
+/* Ajoutez ces styles pour ajuster la taille des cartes */
+.recette-list {
+    list-style: none;
+    padding: 0;
+    display: flex; /* Utiliser flexbox pour aligner les recettes sur la même ligne */
+    flex-wrap: wrap; /* Permettre le retour à la ligne des recettes si nécessaire */
+    justify-content: center; /* Centrer les recettes horizontalement */
+}
+
+.recette-item {
+    border: 3px solid #ccc;
+    border-radius: 17px;
+    padding: 10px;
+    margin: 10px; /* Ajoute un espacement entre les recettes */
+    background-color: #f9f9f9;
+    max-width: 400px; /* Limite la largeur de chaque carte */
+}
+.recette-image {
+    width: 100px; /* Fixe la largeur de l'image */
+    height: 100px; /* Fixe la hauteur de l'image */
+    object-fit: cover; /* Ajuste l'image pour couvrir le conteneur tout en préservant son ratio */
+    border-radius: 50%; /* Pour une forme circulaire, si nécessaire */
+} 
+</style>
+
+<main>
+    <article>
+        <main>
+    <article>
+        <section class="section section-divider white blog" id="blog">
+            <h1>Liste des Recettes</h1>
+            <ul class="recette-list">
+                {% for recette in recettes %}
+                    <li class="recette-item">
+                        <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.titre }}" class="recette-image">
+                        <div class="recette-details">
+                            <h2 class="recette-title">{{ recette.titre }}</h2>
+                            <p class="recette-description">{{ recette.description }}</p>
+                            <div class="recette-actions">
+                                <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btn">Voir la recette</a>
+                                <a href="{{ path('app_recette_edit', {'id': recette.id}) }}" class="btn btn-edit"><i class="fas fa-edit"></i> Modifier</a>
+                                <!-- Ajouter un bouton de suppression avec un attribut data-id -->
+                                <button type="button" class="btn btn-delete" data-id="{{ recette.id }}">Supprimer</button>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </article>
+</main>
+
+<!-- Ajouter un champ caché pour le jeton CSRF -->
+<input type="hidden" id="csrf-token" value="{{ csrf_token('delete') }}">
+
+<!-- JavaScript pour gérer la suppression -->
+<script>
+    // Récupérez le jeton CSRF à partir du champ caché
+const csrfToken = document.getElementById('csrf-token').value;
+
+// Sélectionnez tous les boutons "Supprimer"
+const deleteButtons = document.querySelectorAll('.btn-delete');
+
+// Ajoutez un événement click à chaque bouton
+deleteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Récupérez l'ID de la recette à supprimer à partir de l'attribut data-id
+        const recetteId = button.getAttribute('data-id');
+
+        // Affichez une boîte de dialogue de confirmation
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
+            // Créez un formulaire pour envoyer la demande de suppression
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `{{ path('app_recette_delete', {'id': 'REPLACE_WITH_ID'}) }}`; // Remplacez REPLACE_WITH_ID par l'ID de la recette
+
+            // Créez un champ pour le jeton CSRF
+            const csrfTokenInput = document.createElement('input');
+            csrfTokenInput.type = 'hidden';
+            csrfTokenInput.name = '_token';
+            csrfTokenInput.value = csrfToken; // Utilisez le jeton CSRF récupéré
+
+            // Créez un champ pour l'ID de la recette
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id';
+            idInput.value = recetteId;
+
+            // Ajoutez les champs au formulaire
+            form.appendChild(csrfTokenInput);
+            form.appendChild(idInput);
+
+            // Ajoutez le formulaire à la page et soumettez-le
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

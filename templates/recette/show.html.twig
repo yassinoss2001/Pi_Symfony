@@ -397,15 +397,33 @@
     margin-bottom: 8px; /* Réduire l'espacement sous le commentaire */
     font-size: 14px; /* Réduire la taille du commentaire */
 }
+.star-rating {
+    display: flex; /* Utilisation de flexbox pour aligner horizontalement */
+    font-size: 24px; /* Taille des étoiles */
+    margin-bottom: 10px; /* Espacement en bas */
+}
+
+.star-rating span {
+    cursor: pointer; /* Curseur pointer pour indiquer que c'est cliquable */
+    margin-right: 5px; /* Espacement entre les étoiles */
+}
+
+/* Style des étoiles pleines */
+.star-rating .filled-star::before {
+    content: "\2605"; /* Étoile pleine */
+}
+
+/* Style des étoiles vides */
+.star-rating .empty-star::before {
+    content: "\2606"; /* Étoile vide */
+}
+.avis-title {
+    color: red;
+}
 </style>
 <main>
         <article>
       <section class="section section-divider white cta">
-{% if qrCodeImage is defined and qrCodeImage %}
-    <img src="{{ qrCodeImage }}" alt="Code QR pour la recette">
-{% else %}
-    <p>Image du code QR non disponible.</p>
-{% endif %}
     <div class="card-wrapper">
         <div class="card">
             <!-- Card left: Image -->
@@ -513,18 +531,26 @@
             </div>
         </div>
     </div>
+    
      <article>
 
      <article>
       <section class="section section-divider white cta">
-<h2>Laisser un avis</h2>
+<h2 class="avis-title">Laisser un avis</h2>
     <div class="avis-form-wrapper">
         {{ form_start(avisForm, {'attr': {'class': 'avis-form', 'name': 'avisForm'}}) }}
         <div class="form-group">
-            <label for="note" class="avis-label"><i class="fas fa-star icon-blue"></i> Note</label>
-            {{ form_widget(avisForm.note, {'attr': {'class': 'form-control avis-note'}}) }}
-            {{ form_errors(avisForm.note, {'attr': {'class': 'text-danger'}}) }}
-        </div>
+    <label for="note" class="avis-label"><i class="fas fa-star icon-blue"></i> Note</label>
+    <div class="star-rating" id="star-rating">
+        <span data-value="1">&#x2606;</span>
+        <span data-value="2">&#x2606;</span>
+        <span data-value="3">&#x2606;</span>
+        <span data-value="4">&#x2606;</span>
+        <span data-value="5">&#x2606;</span>
+    </div>
+    {{ form_widget(avisForm.note, {'attr': {'class': 'form-control avis-note', 'style': 'display: none;'}}) }}
+    {{ form_errors(avisForm.note, {'attr': {'class': 'text-danger'}}) }}
+</div>
         <div class="form-group">
             <label for="commentaire" class="avis-label"><i class="fas fa-comment-alt icon-green"></i> Commentaire</label>
             {{ form_widget(avisForm.commentaire, {'attr': {'class': 'form-control avis-commentaire', 'rows': 4}}) }}
@@ -534,7 +560,7 @@
         {{ form_end(avisForm) }}
     </div>
     <div class="avis-list-container">
-    <h2>Avis sur cette recette :</h2>
+    <h2 class="avis-title">Avis sur cette recette </h2>
     <div class="avis-list-wrapper">
         {% for avis in avisRecette %}
             <div class="avis-card">
@@ -558,10 +584,21 @@
                 </div>
                 <div class="note-value">{{ avis.note }}/5</div> <!-- Affiche la valeur de la note -->
                 <div class="commentaire">{{ avis.commentaire }}</div>
+                
             </div>
         {% endfor %}
     </div>
 </div>
+<div id="alertModal" class="modal">
+    <div class="modal-content">
+        <h2 class="modal-title">Erreur</h2>
+        <p>Veuillez sélectionner une note avant de soumettre.</p>
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="closeAlertModal()">OK</button>
+        </div>
+    </div>
+</div>
+
       </section>
       </article>
 <script>
@@ -600,5 +637,48 @@
         // Ouvrir la fenêtre de partage de Facebook
         window.open(fbShareUrl, '_blank');
     }
+
+      function showAlertModal() {
+        var alertModal = document.getElementById('alertModal');
+        alertModal.style.display = 'flex'; // Affiche la boîte de dialogue d'alerte
+    }
+
+    function closeAlertModal() {
+        var alertModal = document.getElementById('alertModal');
+        alertModal.style.display = 'none'; // Cache la boîte de dialogue d'alerte
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.querySelector('.btn-primary');
+        const noteInput = document.querySelector('.avis-note');
+        const starRating = document.getElementById('star-rating');
+
+        submitButton.addEventListener('click', function(event) {
+            // Vérifiez si aucune note n'a été sélectionnée
+            if (!noteInput.value) {
+                event.preventDefault(); // Empêche la soumission du formulaire
+                showAlertModal(); // Affiche la boîte de dialogue d'alerte
+            }
+        });
+
+        starRating.addEventListener('click', function(event) {
+            if (event.target.tagName === 'SPAN') {
+                const value = parseInt(event.target.getAttribute('data-value'));
+                noteInput.value = value;
+                updateStars(value);
+            }
+        });
+
+        function updateStars(value) {
+            const stars = starRating.querySelectorAll('span');
+            stars.forEach(function(star, index) {
+                if (index < value) {
+                    star.innerHTML = '&#x2605;'; // Étoile pleine
+                } else {
+                    star.innerHTML = '&#x2606;'; // Étoile vide
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}

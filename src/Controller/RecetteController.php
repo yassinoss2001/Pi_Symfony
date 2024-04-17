@@ -108,82 +108,93 @@ $recette->setIngredients($ingredientsConcat);
         ]);
     }
 
+    #[Route('/liste', name: 'app_recette_liste', methods: ['GET'])]
+    public function liste(RecetteRepository $recetteRepository): Response
+    {
+        $recettes = $recetteRepository->findAll(); // Récupérer toutes les recettes
     
-#[Route('/{id}', name: 'app_recette_show', methods: ['GET', 'POST'])]
-public function show(Request $request, Recette $recette, AvisRepository $avisRepository): Response
-{
-    // Récupérer les avis associés à cette recette
-    $avisRecette = $avisRepository->findBy(['id_recette' => $recette]);
-
-    // Créer un nouveau formulaire d'avis
-    $avis = new Avis();
-    $avis->setDate(new \DateTime());
-    $avis->setIdRecette($recette);
-    $avisForm = $this->createForm(AvisType::class, $avis);
-    $avisForm->handleRequest($request);
-
-    if ($avisForm->isSubmitted() && $avisForm->isValid()) {
-        $note = $request->request->get('note'); // Récupérer la note depuis le champ caché
-
-        // Associer l'avis à la recette et enregistrer en base de données
+        return $this->render('recette/liste_recette.html.twig', [
+            'recettes' => $recettes,
+        ]);
+    }
+    #[Route('/{id}', name: 'app_recette_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, Recette $recette, AvisRepository $avisRepository): Response
+    {
+        // Récupérer les avis associés à cette recette
+        $avisRecette = $avisRepository->findBy(['id_recette' => $recette]);
+    
+        // Créer un nouveau formulaire d'avis
+        $avis = new Avis();
+        $avis->setDate(new \DateTime());
         $avis->setIdRecette($recette);
-        $avis->setNote($note);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($avis);
-        $entityManager->flush();
-
-        // Rediriger vers la même page après la soumission du formulaire
-        return $this->redirectToRoute('app_recette_show', ['id' => $recette->getId()]);
+    
+        // Vérifier si la requête contient la valeur de la note
+        $noteValue = $request->request->get('note');
+    
+        // Vérifier si la valeur de la note est valide
+        if ($noteValue !== null && is_numeric($noteValue)) {
+            $note = intval($noteValue); // Convertir en entier
+            $avis->setNote($note);
+        } else {
+            // Gérer le cas où la note n'est pas valide
+            // Vous pouvez définir une valeur par défaut ou afficher un message d'erreur
+        }
+    
+        $avisForm = $this->createForm(AvisType::class, $avis);
+        $avisForm->handleRequest($request);
+    
+        if ($avisForm->isSubmitted() && $avisForm->isValid()) {
+            // Associer l'avis à la recette et enregistrer en base de données
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($avis);
+            $entityManager->flush();
+    
+            // Rediriger vers la même page après la soumission du formulaire
+            return $this->redirectToRoute('app_recette_show', ['id' => $recette->getId()]);
+        }
+    
+        return $this->render('recette/show.html.twig', [
+            'recette' => $recette,
+            'avisForm' => $avisForm->createView(),
+            'avisRecette' => $avisRecette, // Passer les avis à la vue
+        ]);
     }
 
-    return $this->render('recette/show.html.twig', [
-        'recette' => $recette,
-        'avisForm' => $avisForm->createView(),
-        'avisRecette' => $avisRecette, // Passer les avis à la vue
-    ]);
-}
-
-
-#[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
 {
     $form = $this->createForm(RecetteType::class, $recette);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Check if the 'image' field is empty
-        $existingImage = $recette->getImage();
+        // Check if a new image file is uploaded
         $newImage = $form->get('image')->getData();
-
-        if (!$newImage) {
-            // If no new image is provided, keep the existing one
-            $recette->setImage($existingImage);
-        } else {
-            // If a new image is provided, handle it as in the 'new' action
-            $imageFileName = uniqid().'.'.$newImage->guessExtension();
-            $newImage->move(
-                $this->getParameter('images_directory'),
-                $imageFileName
-            );
-            $recette->setImage($imageFileName);
-        }
-
-        // Check if the 'video' field is empty
-        $existingVideo = $recette->getVideo();
+        // Check if a new video file is uploaded
         $newVideo = $form->get('video')->getData();
 
-        if (!$newVideo) {
-            // If no new video is provided, keep the existing one
-            $recette->setVideo($existingVideo);
+        if (!$newImage && !$newVideo) {
+            // If no new image or video is provided, keep the existing ones
+            $recette->setImage($recette->getImage());
+            $recette->setVideo($recette->getVideo());
         } else {
-            // If a new video is provided, handle it similarly to the image
-            $videoFileName = uniqid().'.'.$newVideo->guessExtension();
-            $newVideo->move(
-                $this->getParameter('videos_directory'),
-                $videoFileName
-            );
-            $recette->setVideo($videoFileName);
+            if ($newImage) {
+                // Handle new image upload
+                $imageFileName = uniqid().'.'.$newImage->guessExtension();
+                $newImage->move(
+                    $this->getParameter('images_directory'),
+                    $imageFileName
+                );
+                $recette->setImage($imageFileName);
+            }
+            if ($newVideo) {
+                // Handle new video upload
+                $videoFileName = uniqid().'.'.$newVideo->guessExtension();
+                $newVideo->move(
+                    $this->getParameter('videos_directory'),
+                    $videoFileName
+                );
+                $recette->setVideo($videoFileName);
+            }
         }
 
         $entityManager->flush();
@@ -196,8 +207,6 @@ public function edit(Request $request, Recette $recette, EntityManagerInterface 
         'form' => $form,
     ]);
 }
-
-
     #[Route('/{id}', name: 'app_recette_delete', methods: ['POST'])]
     public function delete(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
     {
