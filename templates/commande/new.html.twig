@@ -1,0 +1,19 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}New Commande{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<center>
+    <h1>Nouvelle Commande</h1>
+</center>
+<br>
+<br>
+    {{ include('commande/_form.html.twig') }}
+
+    <a href="{{ path('app_commande_index') }}">back to list</a>
+    
+{% endblock %}

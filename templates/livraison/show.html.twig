@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livraison{% endblock %}
+
+{% block body %}
+    <h1>Livraison</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ livraison.id }}</td>
+            </tr>
+            <tr>
+                <th>IdLivreur</th>
+                <td>{{ livraison.idLivreur }}</td>
+            </tr>
+            <tr>
+                <th>HeureDepart</th>
+                <td>{{ livraison.heureDepart }}</td>
+            </tr>
+            <tr>
+                <th>EtatLivraison</th>
+                <td>{{ livraison.etatLivraison }}</td>
+            </tr>
+            <tr>
+                <th>CommentairesLivreur</th>
+                <td>{{ livraison.commentairesLivreur }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_livraison_index') }}">back to list</a>
+
+    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}">edit</a>
+
+    {{ include('livraison/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}New Commande{% endblock %}
+{% block livreur %}
+    <li class="nav-item">
+        <a href="{{ path('app_commande_index_livreur') }}" class="navbar-link" data-nav-link>Mes Livraisons</a>
+    </li>
+{% endblock %}
+{% block content %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<div class="container">
+    <h1 class="mb-4">Commandes Disponibles</h1>
+</div>
+
+<div id="map" style="height: 600px;"></div>
+
+<script>
+    // Initialize map
+    var map = L.map('map').setView([0, 0], 2); // Initial map view, adjust as needed
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+
+    // Add markers for each order
+    {% for commande in commandes %}
+    var marker{{ loop.index }} = L.marker([{{ commande.latitude }}, {{ commande.longitude }}]).addTo(map);
+    var popupContent{{ loop.index }} = `
+        <div>
+            <h5>{{ commande.adresse }}</h5>
+            <p>Date de Commande: {{ commande.dateCommande ? commande.dateCommande|date('Y-m-d H:i:s') : '' }}</p>
+            <p>État: {{ commande.etatCommande }}</p>
+            <p>Mode de Paiement: {{ commande.modePayement }}</p>
+            <p>Remarque: {{ commande.remarque }}</p>
+          <form id="deliveryForm{{ loop.index }}" action="{{ path('app_livraison_new') }}" method="post">
+    <input type="hidden" name="commandeId" value="{{ commande.id }}" /> <!-- Hidden input for commandeId -->
+    <div class="form-group">
+        <label for="comment{{ loop.index }}">Commentaire:</label>
+        <input type="text" class="form-control" id="comment{{ loop.index }}" name="comment{{ loop.index }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Deliver Now</button>
+</form>
+        </div>
+    `;
+    marker{{ loop.index }}.bindPopup(popupContent{{ loop.index }});
+    {% endfor %}
+    
+    // Function to handle delivering an order
+    function deliverOrder(lat, lng, index, event) {
+        event.preventDefault(); // Prevent form submission
+
+        var comment = document.getElementById('comment' + index).value;
+        
+        // Here you can implement your logic for delivering the order
+        console.log('Delivering order at coordinates:', lat, lng, 'with comment:', comment);
+
+        // Close the popup after submitting the form
+        map.closePopup();
+    }
+</script>
+
+
+{% endblock %}

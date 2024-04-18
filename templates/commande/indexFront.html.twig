@@ -1,0 +1,84 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}New Commande{% endblock %}
+
+
+    
+   
+
+
+{% block content %}
+ <style>
+        /* Custom styles for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:hover {
+            background-color: #ddd;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+    </style>
+    <br>
+    <br>
+    <br>
+    <center>
+    <h1>Mes Commandes</h1></center>
+    <br>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Menu</th>
+                <th>Address</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Etat</th>
+                <th>Methode Paiement</th>
+                <th>Remarque</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+                <tr>
+                    <td>
+                        <div class="form-check font-size-16">
+                            <input class="form-check-input" type="checkbox" id="transactionCheck{{ loop.index }}">
+                            <label class="form-check-label" for="transactionCheck{{ loop.index }}"></label>
+                        </div>
+                    </td>
+                    <td>{{ commande.idMenu }}</td>
+                    <td>{{ commande.adresse }}</td>
+                    <td>{{ commande.longitude }}, {{ commande.latitude }}</td>
+                    <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ commande.etatCommande }}</td>
+                    <td>{{ commande.modePayement }}</td>
+                    <td>{{ commande.remarque }}</td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,20 +1,41 @@
-{% extends 'FooterHeader.html.twig' %}
-{%block s%}
-<title>
-Espace Livraison
-</title>
-{%endblock%}
+{% extends 'base.html.twig' %}
+
+{% block title %}Livraison index{% endblock %}
 
 {% block body %}
+    <h1>Livraison index</h1>
 
-<main>
-<article>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdLivreur</th>
+                <th>HeureDepart</th>
+                <th>EtatLivraison</th>
+                <th>CommentairesLivreur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livraison in livraisons %}
+            <tr>
+                <td>{{ livraison.id }}</td>
+                <td>{{ livraison.idLivreur }}</td>
+                <td>{{ livraison.heureDepart }}</td>
+                <td>{{ livraison.etatLivraison }}</td>
+                <td>{{ livraison.commentairesLivreur }}</td>
+                <td>
+                    <a href="{{ path('app_livraison_show', {'id': livraison.id}) }}">show</a>
+                    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-      <section class="hero" id="home" >
-    
-<h1>Espace Livraison</h1>
- </section>
-</main>
-</article>
-
+    <a href="{{ path('app_livraison_new') }}">Create new</a>
 {% endblock %}
