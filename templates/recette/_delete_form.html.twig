@@ -1,5 +1,4 @@
-<form id="deleteForm" method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
-        <!-- Bouton "Supprimer" qui ouvre la boîte de dialogue -->
-        <button type="button" class="btn" onclick="openConfirmationModal()">Supprimer</button>
-    </form>
+<form method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
+    <button class="btn">Delete</button>
+</form>

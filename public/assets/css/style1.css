@@ -1055,7 +1055,7 @@ body.active { overflow: hidden; }
 
 .blog-card .card-banner {
   position: relative;
-  aspect-ratio: 1 / 0.65;
+  aspect-ratio: 2 / 0.65;
   background-color: var(--gainsboro);
 }
 

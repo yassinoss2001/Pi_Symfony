@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use TCPDF;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCodeBundle\Service\QrCodeHandler;
 use App\Entity\Avis;
 use App\Form\AvisType;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
+use Endroid\QrCode\Writer\PngWriter;
+
 
 
 
@@ -38,6 +40,7 @@ class RecetteController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            
         $etapes = $form->get('etape')->getData(); // Récupérer les étapes du champ initial
         $etapesArray = explode("\n", $etapes); // Convertir les étapes en un tableau
         // Récupérer les étapes dynamiquement ajoutées
@@ -122,7 +125,14 @@ $recette->setIngredients($ingredientsConcat);
     {
         // Récupérer les avis associés à cette recette
         $avisRecette = $avisRepository->findBy(['id_recette' => $recette]);
-    
+
+        // Calculer le total des avis
+        $totalAvis = count($avisRecette);
+
+        $totalNotes = 0;
+    foreach ($avisRecette as $avis) {
+        $totalNotes += $avis->getNote();
+    }
         // Créer un nouveau formulaire d'avis
         $avis = new Avis();
         $avis->setDate(new \DateTime());
@@ -157,8 +167,40 @@ $recette->setIngredients($ingredientsConcat);
             'recette' => $recette,
             'avisForm' => $avisForm->createView(),
             'avisRecette' => $avisRecette, // Passer les avis à la vue
+            'totalAvis' => $totalAvis, // Passer le total des avis à la vue
+            'totalNotes' => $totalNotes,
         ]);
     }
+
+    #[Route('/qr-code/{id}', name: 'qr_code')]
+public function generateQrCode($id)
+{
+    $recette = $this->getDoctrine()->getRepository(Recette::class)->find($id);
+    
+    // Generate the QR code content
+    $content = sprintf(
+        'Titre recette: %s, Description: %s, Ingrédients: %s, Étapes: %s',
+        $recette->getTitre(),
+        $recette->getDescription(),
+        $this->formatList($recette->getIngredients()),
+        $this->formatSteps($recette->getEtape())
+    );
+
+    // Create a QR code
+    $qrCode = new QrCode($content);
+
+    // Create a writer
+    $writer = new PngWriter();
+
+    // Generate a result
+    $result = $writer->write($qrCode);
+
+    // Create a response
+    $response = new QrCodeResponse($result);
+
+    return $response;
+    
+}
 
     #[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
@@ -207,19 +249,35 @@ public function edit(Request $request, Recette $recette, EntityManagerInterface 
         'form' => $form,
     ]);
 }
-    #[Route('/{id}', name: 'app_recette_delete', methods: ['POST'])]
-    public function delete(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
-    {
-
-
-
-        if ($this->isCsrfTokenValid('delete'.$recette->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($recette);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
+#[Route('/{id}/delete', name: 'app_recette_delete', methods: ['POST'])]
+public function delete(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete' . $recette->getId(), $request->request->get('_token'))) {
+        $entityManager->remove($recette);
+        $entityManager->flush();
+        $this->addFlash('success', 'Recette supprimée avec succès.');
+    } else {
+        $this->addFlash('error', 'Erreur lors de la suppression de la recette.');
     }
+
+    return $this->redirectToRoute('app_recette_liste');
+}
+
+#[Route('/avis/{id}/delete', name: 'app_avis_delete', methods: ['POST'])]
+public function deleteAvis(Request $request, Avis $avis, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete' . $avis->getId(), $request->request->get('_token'))) {
+        $entityManager->remove($avis);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'avis a été supprimé avec succès.');
+    } else {
+        $this->addFlash('error', 'Erreur lors de la suppression de l\'avis.');
+    }
+
+    // Rediriger vers la page de la recette ou une autre page appropriée
+    return $this->redirectToRoute('app_recette_show', ['id' => $avis->getIdRecette()->getId()]);
+}
     #[Route('/{id}/pdf', name: 'app_recette_pdf', methods: ['GET'])]
 public function generatePdf(Recette $recette): Response
 {
@@ -329,32 +387,6 @@ private function formatSteps($steps)
     return $formattedSteps;
 }
 
-#[Route('/{id}/generate-qr', name: 'app_recette_generate_qr', methods: ['GET'])]
-public function generateQRCodeAction(Recette $recette, QrCodeHandler $qrCodeHandler): Response
-{
-    // Construisez les données de la recette pour le QR code
-    $formattedData = "Title: " . $recette->getTitre() . "\n";
-    $formattedData .= "Ingredients: " . $this->formatList($recette->getIngredients()) . "\n";
-    $formattedData .= "Les Etapes: " . $this->formatSteps($recette->getEtape());
-
-    // Créez un objet QrCode avec les données formatées
-    $qrCode = new QrCode($formattedData);
-
-    // Configurez les paramètres du code QR selon vos besoins
-    $qrCode->setSize(300);
-    $qrCode->setMargin(10);
-
-    // Générez l'image du QR code
-    $qrCodeImage = $qrCodeHandler->saveQrCode($qrCode, 'data');
-
-    // Renvoyez la réponse avec l'image du QR code
-    return $this->render('recette/show.html.twig', [
-        'recette' => $recette,
-        'qrCodeImage' => $qrCodeImage,
-    ]);
-}
-
-    
 }
     
 

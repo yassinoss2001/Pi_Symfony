@@ -1,79 +1,91 @@
 {% extends 'FooterHeader.html.twig' %}
 
-{% block s %}
+{% block title %}
     <title>Espace Recettes</title>
 {% endblock %}
 
 {% block body %}
+    <style>
+        .create-new-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
+        .create-new-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
 
-<style>
-
-.create-new-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Green background */
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        /* Fixed image size */
+        .card-banner img {
+            width: 369px;
+            height: 240px;
+        }
+      .blog-card .card-banner {
+    position: relative;
+    aspect-ratio: 2 / 0.65;
+    background-color: var(--gainsboro);
 }
-
-.create-new-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+.align-left {
+    float: left;
+    margin-right: -136px; /* Ajoutez une marge à droite si nécessaire */
 }
-</style>
-<main>
-    <section class="section section-divider white blog" id="blog">
-        <div class="container">
-            <p class="section-subtitle">Derniers Articles </p>
-            <h2 class="h2 section-title">
-                Espace<span class="span">Recettes</span>
-            </h2>
-            <p class="section-text">Explorez les délicieuses créations de nos clients et découvrez de nouvelles recettes à essayer chez vous !</p>
-            <ul class="blog-list">
-                {% for recette in recettes %}
-                <li>
-                    <div class="blog-card">
-                        <div class="card-banner">
-                            <img src="{{ asset('uploads/images/' ~ recette.image) }}" style="width: 369px; height: 240px;" loading="lazy" alt="{{ recette.titre }}" class="w-100">
-                        </div>
-                        <div class="card-content">
-                            <div class="card-meta-wrapper">
-                                <a href="#" class="card-meta-link">
-                                    <ion-icon name="person-outline"></ion-icon>
-                                    {% if recette.idUser is not null %}
-                                        <p class="meta-info">Author: {{ recette.idUser.nom }}</p>
-                                    {% else %}
-                                        <p class="meta-info">Author: Unknown</p>
-                                    {% endif %}
-                                </a>
+    </style>
+    <main>
+        <section class="section section-divider white blog" id="blog">
+            <div class="container">
+<a href="{{ path('app_recette_liste') }}" class="create-new-button align-left">Mes Recettes</a>
+
+                <p class="section-subtitle">Derniers Articles </p>
+                <h2 class="h2 section-title">
+                    Espace<span class="span">Recettes</span>
+                </h2>
+                <p class="section-text">Explorez les délicieuses créations de nos clients et découvrez de nouvelles recettes à essayer chez vous !</p>
+                <ul class="blog-list">
+                    {% for recette in recettes %}
+                        <li>
+                            <div class="blog-card">
+                                <div class="card-banner">
+                                    <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.titre }}" class="w-100" loading="lazy">
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-meta-wrapper">
+                                        <a href="#" class="card-meta-link">
+                                            <ion-icon name="person-outline"></ion-icon>
+                                            {% if recette.idUser is not null %}
+                                                <p class="meta-info">Author: {{ recette.idUser.nom }}</p>
+                                            {% else %}
+                                                <p class="meta-info">Author: Unknown</p>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">{{ recette.titre }}</a>
+                                    </h3>
+                                    <p class="card-text">{{ recette.description }}</p>
+                                    <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btn-link">
+                                        <span>Lire la suite</span>
+                                        <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+                                    </a>
+                                    
+                                </div>
                             </div>
-                            <h3 class="h3">
-                                <a href="#" class="card-title">{{ recette.titre }}</a>
-                            </h3>
-                            <p class="card-text">{{ recette.description }}</p>
-                            <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btn-link">
-                                <span>Lire la suite</span>
-                                <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
-                            </a>
-                            {#  {% if app.user and app.user.id == recette.idUser %} #}
-                            <a href="{{ path('app_recette_edit', {'id': recette.id}) }}">edit</a>
-                            {#   {% endif %} #}
-                        </div>
-                    </div>
-                </li>
-                {% else %}
-                <li>
-                    <p>No records found</p>
-                </li>
-                {% endfor %}
-            </ul>
-<a href="{{ path('app_recette_new') }}" class="create-new-button">Create new</a>
-        </div>
-    </section>
-</main>
+                        </li>
+                    {% else %}
+                        <li>
+                            <p>No records found</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ path('app_recette_new') }}" class="create-new-button">Create new</a>
+            </div>
+        </section>
+    </main>
 {% endblock %}

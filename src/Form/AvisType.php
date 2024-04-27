@@ -28,19 +28,7 @@ class AvisType extends AbstractType
             ]),
         ],
     ])
-    ->add('commentaire', null, [
-        'constraints' => [
-            new Assert\NotBlank([
-                'message' => 'Le commentaire ne peut pas être vide.',
-            ]),
-            new Assert\Length([
-                'min' => 5,
-                'max' => 1000,
-                'minMessage' => 'Le commentaire doit contenir au moins {{ limit }} caractères.',
-                'maxMessage' => 'Le commentaire ne peut pas dépasser {{ limit }} caractères.',
-            ]),
-        ],
-    ])
+    ->add('commentaire')
         ->add('id_user', EntityType::class, [
             'class' => 'App\Entity\User', // Remplacez par le chemin correct vers votre entité User
             'choice_label' => 'nom', // Remplacez 'nom' par le champ que vous voulez afficher dans la liste déroulante

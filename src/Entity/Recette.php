@@ -18,21 +18,31 @@ class Recette
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le titre ne peut pas être vide")]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "La description ne peut pas être vide")]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Les ingrédients ne peuvent pas être vides")]
     private ?string $ingredients = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Les étapes ne peuvent pas être vides")]
     private ?string $etape = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'image ne peut pas être vide")]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La vidéo ne peut pas être vide")]
+    #[Assert\File(
+        mimeTypes: ["video/mp4"],
+        mimeTypesMessage: "Veuillez télécharger un fichier vidéo au format MP4"
+    )]
     private ?string $video = null;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]

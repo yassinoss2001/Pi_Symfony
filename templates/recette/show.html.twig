@@ -384,7 +384,7 @@
 }
 
 .star-rating span {
-    color: #ff6b6b; /* Couleur des étoiles */
+    color: #ffed6b; /* Couleur des étoiles */
 }
 
 .note-value {
@@ -419,12 +419,68 @@
 }
 .avis-title {
     color: red;
+    margin-bottom: 10px; /* Ajoutez une marge en bas pour séparer du contenu suivant */
+    margin-top: 0; 
+
 }
+.cta {
+    --section-padding: 167px;
+}
+.big-card-white {
+    background-color: #fff; /* Fond blanc */
+    padding: 20px; /* Espacement intérieur */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    max-width: 1100px; /* Largeur maximale de la carte */
+    margin: 0 auto; /* Centre la carte horizontalement */
+}
+.cta {
+    --section-padding: 108px;
+}
+.header {
+    --color: hsl(0deg 100% 50%);
+    --btn-color: hsl(23deg 100% 50%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-block: 1px;
+    border-block-end: 1px solid var(--champagne-pink_20);
+    z-index: 4;
+    background-color: white;
+}
+.big-card-whitee {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 522px;
+}
+.avis-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Espacement égal entre les cartes */
+}
+
+.avis-card {
+    width: calc(50% - 10px); /* 50% de largeur moins un espacement */
+    margin-bottom: 20px; /* Espacement en bas */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
 </style>
 <main>
         <article>
       <section class="section section-divider white cta">
-    <div class="card-wrapper">
+<img src="{{ path('qr_code', {'id': recette.id}) }}" alt="QR Code Image">
+
+  <div class="card-wrapper">
+    <div class="big-card-white"> <!-- Ajoutez cette classe pour la grande carte blanche -->
         <div class="card">
             <!-- Card left: Image -->
             <div class="product-imgs">
@@ -441,47 +497,36 @@
                     <h2>Description:</h2>
                     <p>{{ recette.description }}</p>
                     <h2>Ingrédients:</h2>
-    <ul>
-        {% for ingredient in recette.ingredients|split("\n") %}
-            <p>.{{ ingredient }}<p>
-        {% endfor %}
-    </ul>
-              <h2>Étapes:</h2>
-    <ol>
-        {% set etapes = recette.etape|split("\n") %}
-        {% for i, etape in etapes %}
-            <p>Étape {{ i + 1 }} : <br> {{ etape }}</p>
-        {% endfor %}
-    </ol>
+                    <ul>
+                        {% for ingredient in recette.ingredients|split("\n") %}
+                            <li>{{ ingredient }}</li>
+                        {% endfor %}
+                    </ul>
+                    <h2>Étapes:</h2>
+                    <ol>
+                        {% set etapes = recette.etape|split("\n") %}
+                        {% for i, etape in etapes %}
+                            <li>Étape {{ i + 1 }} : <br>{{ etape }}</li>
+                        {% endfor %}
+                    </ol>
                 </div>
- <div class="purchase-info">
-    <button type="button" class="btn">
-        <a href="{{ path('app_recette_edit', {'id': recette.id}) }}">
-            <i class="fas fa-edit"></i> Modifier
-        </a>
-    </button>
-    <button type="button">
-        {{ include('recette/_delete_form.html.twig') }}
-    </button>
-</div>
-<div class="additional-actions">
-    <div class="download-btn">
-        <button type="button">
-            <a href="{{ path('app_recette_pdf', {'id': recette.id}) }}" target="_blank">
-                <i class="fas fa-download"></i> Télécharger Recette
-            </a>
-        </button>
-    </div>
-    <div class="print-btn">
-        <button type="button" onclick="printRecipe()">
-            <i class="fas fa-print"></i> Imprimer
-        </button>
-    </div>
-</div>
-</div>
 
-
-                <div class="social-links">
+                <div class="additional-actions">
+                    <div class="download-btn">
+                        <button type="button">
+                            <a href="{{ path('app_recette_pdf', {'id': recette.id}) }}" target="_blank">
+                                <i class="fas fa-download"></i> Télécharger Recette
+                            </a>
+                        </button>
+                    </div>
+                    <div class="print-btn">
+                        <button type="button" onclick="printRecipe()">
+                            <i class="fas fa-print"></i> Imprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="social-links">
                     <p>Share At: </p>
      <a href="#" onclick="shareOnFacebook('{{ recette.titre }}', '{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}', '{{ asset('uploads/images/' ~ recette.image) }}', '{{ recette.description }}')">
     <i class="fab fa-facebook-f"></i>
@@ -506,6 +551,13 @@
         </div>
         
     </div>
+        </div>
+    </div>
+    
+</div>
+
+
+   
 
 
     <div id="loadingSpinner" style="display: none;">
@@ -536,9 +588,9 @@
 
      <article>
       <section class="section section-divider white cta">
-<h2 class="avis-title">Laisser un avis</h2>
-    <div class="avis-form-wrapper">
-        {{ form_start(avisForm, {'attr': {'class': 'avis-form', 'name': 'avisForm'}}) }}
+    <div class="big-card-whitee">
+    <h2 class="avis-title">Laisser un avis</h2>
+{{ form_start(avisForm, {'attr': {'class': 'avis-form', 'name': 'avisForm', 'novalidate': 'novalidate'}}) }}
         <div class="form-group">
     <label for="note" class="avis-label"><i class="fas fa-star icon-blue"></i> Note</label>
     <div class="star-rating" id="star-rating">
@@ -560,7 +612,10 @@
         {{ form_end(avisForm) }}
     </div>
     <div class="avis-list-container">
-    <h2 class="avis-title">Avis sur cette recette </h2>
+    
+    <h2 class="avis-title">Avis sur cette recette ({{ totalAvis }})</h2>
+<div class="total-notes">Total des notes : {{ totalNotes }}</div>
+
     <div class="avis-list-wrapper">
         {% for avis in avisRecette %}
             <div class="avis-card">
@@ -574,17 +629,21 @@
                                 </a></div>
                 <div>{{ avis.date|date('Y-m-d') }}</div>
                 <div class="star-rating" style="display: flex;"> <!-- Utilisation de flexbox pour les étoiles horizontales -->
-                    {% for i in range(1, 6) %}
+                    {% for i in range(1, 5) %}
                         {% if i <= avis.note %}
                             <span>&#x2605;</span> <!-- Étoile pleine -->
                         {% else %}
                             <span>&#x2606;</span> <!-- Étoile vide -->
                         {% endif %}
+
                     {% endfor %}
+                    <form method="post" action="{{ path('app_avis_delete', {'id': avis.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet avis?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avis.id) }}">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
                 </div>
                 <div class="note-value">{{ avis.note }}/5</div> <!-- Affiche la valeur de la note -->
                 <div class="commentaire">{{ avis.commentaire }}</div>
-                
             </div>
         {% endfor %}
     </div>
@@ -602,6 +661,8 @@
       </section>
       </article>
 <script>
+
+
   window.onload = function() {
         setTimeout(function() {
             document.getElementById('corner-video').style.opacity = 1; // Rendre la vidéo visible
@@ -611,21 +672,7 @@
      function printRecipe() {
         window.print(); // Ouvre la boîte de dialogue d'impression du navigateur
     }
-      function openConfirmationModal() {
-            var confirmationModal = document.getElementById('confirmationModal');
-            confirmationModal.style.display = 'flex'; // Affiche la boîte de dialogue
-        }
-
-        function closeConfirmationModal() {
-            var confirmationModal = document.getElementById('confirmationModal');
-            confirmationModal.style.display = 'none'; // Cache la boîte de dialogue
-        }
-
-        function confirmDelete() {
-            var deleteForm = document.getElementById('deleteForm');
-            deleteForm.submit(); // Soumet le formulaire de suppression
-        }
-        
+      
         function shareOnFacebook(title, url, image, description) {
         // Construire l'URL de partage de Facebook avec les paramètres nécessaires
         var fbShareUrl = 'https://www.facebook.com/sharer/sharer.php';
@@ -680,5 +727,9 @@
             });
         }
     });
+
+
+   
+
 </script>
 {% endblock %}

@@ -2,7 +2,6 @@
 
 {% block s %}
     <title>Liste Recettes</title>
-    <link rel="stylesheet" href="{{ asset('path/to/styles.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -10,7 +9,7 @@
 
 /* styles.css */
 :root {
-    --primary-color: #007bff;
+    --primary-color: #f14141;
     --success-color: #28a745;
     --danger-color: #dc3545;
     --dark-color: #000;
@@ -26,6 +25,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     transition: background-color 0.3s ease;
+    background-color:white;
 }
 
 .recette-item:hover {
@@ -54,6 +54,14 @@
     margin-top: 10px;
 }
 
+/* Ajoutez ces styles pour aligner les boutons sur la même ligne */
+.recette-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start; /* Alignez les boutons à gauche */
+    gap: 10px; /* Espacement entre les boutons */
+}
+
 .btn {
     display: inline-block;
     padding: 8px 12px;
@@ -70,18 +78,21 @@
 }
 
 .btn-edit {
-    background-color: var(--success-color);
-    margin-right: 10px;
+    background-color: #f1dd4e;
 }
 
 .btn-edit:hover {
-    background-color: #218838;
+    background-color: #f1dd4e;
 }
 
 .btn-delete {
-    background-color: var(--danger-color);
+    background-color:#f1dd4e;
 }
-
+.recette-title {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #f14141;
+}
 /* Ajoutez ces styles pour ajuster la taille des cartes */
 .recette-list {
     list-style: none;
@@ -90,6 +101,7 @@
     flex-wrap: wrap; /* Permettre le retour à la ligne des recettes si nécessaire */
     justify-content: center; /* Centrer les recettes horizontalement */
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="..." crossorigin="anonymous">
 
 .recette-item {
     border: 3px solid #ccc;
@@ -105,6 +117,53 @@
     object-fit: cover; /* Ajuste l'image pour couvrir le conteneur tout en préservant son ratio */
     border-radius: 50%; /* Pour une forme circulaire, si nécessaire */
 } 
+.btnn {
+    display: inline-block;
+    padding: 8px 12px;
+    border: none;
+    background-color: #f1dd4e;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.header {
+    --color: hsl(0deg 0% 100%);
+    --btn-color: #f14141;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-block: 1px;
+    border-block-end: 1px solid #ffffff;
+    z-index: 4;
+}
+/* Ajoutez ces styles pour la boîte modale */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    width: 300px;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
 </style>
 
 <main>
@@ -112,7 +171,7 @@
         <main>
     <article>
         <section class="section section-divider white blog" id="blog">
-            <h1>Liste des Recettes</h1>
+            <h3>Ma Liste De Recettes</h3>
             <ul class="recette-list">
                 {% for recette in recettes %}
                     <li class="recette-item">
@@ -121,66 +180,72 @@
                             <h2 class="recette-title">{{ recette.titre }}</h2>
                             <p class="recette-description">{{ recette.description }}</p>
                             <div class="recette-actions">
-                                <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btn">Voir la recette</a>
-                                <a href="{{ path('app_recette_edit', {'id': recette.id}) }}" class="btn btn-edit"><i class="fas fa-edit"></i> Modifier</a>
-                                <!-- Ajouter un bouton de suppression avec un attribut data-id -->
-                                <button type="button" class="btn btn-delete" data-id="{{ recette.id }}">Supprimer</button>
-                            </div>
+    <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btnn">Voir la recette</a>
+    <a href="{{ path('app_recette_edit', {'id': recette.id}) }}" class="btn btn-edit"><i class="fas fa-edit"></i> Modifier</a>
+    <form method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
+        <button type="submit" class="btn btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
+    </form>
+</div>
                         </div>
                     </li>
                 {% endfor %}
             </ul>
+            <div id="modal" class="modal">
+    <div class="modal-content">
+        <h2>Confirmer la suppression</h2>
+        <p>Êtes-vous sûr de vouloir supprimer cette recette ?</p>
+        <div class="modal-actions">
+            <button id="confirmDelete" class="btn btn-delete">Oui, Supprimer</button>
+            <button id="cancelDelete" class="btn btnn">Annuler</button>
+        </div>
+    </div>
+</div>
         </section>
     </article>
 </main>
 
-<!-- Ajouter un champ caché pour le jeton CSRF -->
-<input type="hidden" id="csrf-token" value="{{ csrf_token('delete') }}">
-
-<!-- JavaScript pour gérer la suppression -->
 <script>
-    // Récupérez le jeton CSRF à partir du champ caché
-const csrfToken = document.getElementById('csrf-token').value;
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById('modal');
+    var confirmDeleteBtn = document.getElementById('confirmDelete');
+    var cancelDeleteBtn = document.getElementById('cancelDelete');
 
-// Sélectionnez tous les boutons "Supprimer"
-const deleteButtons = document.querySelectorAll('.btn-delete');
+    function showModal() {
+        modal.style.display = 'block';
+    }
 
-// Ajoutez un événement click à chaque bouton
-deleteButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Récupérez l'ID de la recette à supprimer à partir de l'attribut data-id
-        const recetteId = button.getAttribute('data-id');
+    function hideModal() {
+        modal.style.display = 'none';
+    }
 
-        // Affichez une boîte de dialogue de confirmation
-        if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
-            // Créez un formulaire pour envoyer la demande de suppression
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `{{ path('app_recette_delete', {'id': 'REPLACE_WITH_ID'}) }}`; // Remplacez REPLACE_WITH_ID par l'ID de la recette
+    // Événement lorsque l'utilisateur clique sur "Supprimer"
+    document.querySelectorAll('.btn-delete').forEach(function (btn) {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault(); // Empêche la soumission du formulaire par défaut
+            showModal();
+            var deleteForm = document.getElementById('deleteForm');
+            var confirmDeleteForm = document.getElementById('confirmDeleteForm');
 
-            // Créez un champ pour le jeton CSRF
-            const csrfTokenInput = document.createElement('input');
-            csrfTokenInput.type = 'hidden';
-            csrfTokenInput.name = '_token';
-            csrfTokenInput.value = csrfToken; // Utilisez le jeton CSRF récupéré
+            // Remplacez l'attribut 'action' du formulaire de suppression par le bon chemin
+            var actionUrl = this.getAttribute('data-delete-url');
+            deleteForm.setAttribute('action', actionUrl);
+        });
+    });
 
-            // Créez un champ pour l'ID de la recette
-            const idInput = document.createElement('input');
-            idInput.type = 'hidden';
-            idInput.name = 'id';
-            idInput.value = recetteId;
+    // Événement lorsque l'utilisateur clique sur "Oui, Supprimer" dans la boîte modale
+    confirmDeleteBtn.addEventListener('click', function () {
+        var deleteForm = document.getElementById('deleteForm');
+        deleteForm.submit(); // Soumettez le formulaire de suppression
+    });
 
-            // Ajoutez les champs au formulaire
-            form.appendChild(csrfTokenInput);
-            form.appendChild(idInput);
-
-            // Ajoutez le formulaire à la page et soumettez-le
-            document.body.appendChild(form);
-            form.submit();
-        }
+    // Événement lorsque l'utilisateur clique sur "Annuler" dans la boîte modale
+    cancelDeleteBtn.addEventListener('click', function () {
+        hideModal();
     });
 });
-
 </script>
+
+
 
 {% endblock %}

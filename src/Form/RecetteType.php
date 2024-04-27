@@ -24,59 +24,27 @@ class RecetteType extends AbstractType
         $builder
         ->add('titre', TextType::class, [
             'label' => 'titre',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Regex([
-                    'pattern' => '/^[a-zA-Z]+$/',
-                    'message' => 'Le nom du produit doit contenir au moins une lettre.',
-                ]),
-            ],
         ])
         ->add('description', TextType::class, [
             'label' => 'description',
             'required' => true,
-            'constraints' => [
-                new Assert\NotBlank([
-                    'message' => 'Le champ description est requis.',
-                ]),
-            ],
         ])
         ->add('ingredients', TextareaType::class, [
             'label' => 'Ingrédients',
-            'attr' => ['rows' => 3], // Nombre de lignes dans le champ de texte
-            'constraints' => [
-                new Assert\NotBlank([
-                    'message' => 'Veuillez ajouter au moins un ingrédient.',
-                ]),
-            ],
+            'attr' => ['rows' => 3],
         ])
         ->add('etape', TextareaType::class, [
             'label' => 'Étapes',
-            'attr' => ['rows' => 5], // Nombre de lignes dans le champ de texte
-            'constraints' => [
-                new Assert\NotBlank([
-                    'message' => 'Veuillez ajouter au moins une étape.',
-                ]),
-            ],
+            'attr' => ['rows' => 5],
         ])
         ->add('image', FileType::class, [
             'required' => false,
             'data_class' => null,
-            'constraints' => [
-                new NotBlank([
-                    'message' => 'Veuillez télécharger une image',
-                ])
-                ],
-                ])
+        ])
         ->add('video', FileType::class, [
             'required' => false,
             'data_class' => null,
-            'constraints' => [
-                new NotBlank([
-                    'message' => 'Veuillez télécharger une vidéo.',
-                ])
-                ],
-                ]) 
+        ])
         
         ->add('idUser', EntityType::class, [
             'class' => 'App\Entity\User',
