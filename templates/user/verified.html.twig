@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+
+
+
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('assets/js/sweetalert2@11.js') }}"></script>
+        <script>
+            {% if status == 'success' %}
+            Swal.fire({
+                icon: 'success',
+                title: 'Verified',
+                text: "Votre compte est verifié avec succes",
+            }).then(()=>{
+                window.location.href = "{{ path('app_login') }}"
+            })
+            {% else %}
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops ..',
+                text: "Adresse mail n'exsite pas dans notre base de données",
+            }).then(()=>{
+                window.location.href = "{{ path('app_login') }}"
+            })
+            {% endif %}
+        </script>
+    {% endblock %}

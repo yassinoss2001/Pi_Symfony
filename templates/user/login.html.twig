@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .error-message{
+            display: none;
+            color: red;
+        }
+
+        .single-input-fields{
+            margin-bottom: 10px;
+        }
+
+        .input-error{
+            border: 1px solid red !important;
+        }
+    </style>
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="login-form-area">
+
+
+
+
+
+
+        <form method="post" action="{{ path('app_login') }}">
+        <div class="login-form">
+
+            <div class="login-heading">
+                <span>Login</span>
+                <p>Enter Login details to get access</p>
+            </div>
+
+            <div class="input-box">
+
+
+                <div class="single-input-fields">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" id="inputEmail" name="_username" required autofocus value="{{ lastUsername }}">
+                    <p id="error-email" class="error-message"></p>
+                </div>
+
+                <div class="single-input-fields">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" name="_password" required>
+                    <p id="error-password" class="error-message"></p>
+                </div>
+
+
+
+            </div>
+
+
+            <div class="login-footer">
+                <p>Don’t have an account? <a href="{{ path('app_add_user') }}" style=color:#C21A1A;>Sign Up</a> here</p>
+                <button type="submit" class="submit-btn3" style=background-color:#C21A1A;>Login</button>
+                
+            </div>
+
+            </div>
+        </div>
+        </form>
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/sweetalert2@11.js') }}"></script>
+    <script>
+        {% if error %}
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ error.messageKey|trans(error.messageData, 'security') }}",
+            })
+        {% endif %}
+
+    </script>
+
+{% endblock %}

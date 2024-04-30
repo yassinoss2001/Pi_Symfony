@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+    .error-message{
+        display: none;
+        color: red;
+    }
+
+    .single-input-fields{
+        margin-bottom: 10px;
+    }
+
+    .input-error{
+        border: 1px solid red !important;
+    }
+    
+</style>
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="login-form-area">
+        {{ form_start(userform, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="login-form">
+
+            <div class="login-heading">
+                <span>Sign Up</span>
+                <p>Create your account to get full access</p>
+            </div>
+
+            <div class="input-box">
+                <div class="single-input-fields">
+    <div class="row">
+        <div class="col">
+            <label>Nom</label>
+            {{ form_widget(userform.nom, { 'attr' : { 'placeholder' : 'Nom', 'class' : userform.nom.vars.valid ? '' : 'input-error' } }) }}
+            <p id="error-nom" class="error-message">{{ form_errors(userform.nom)|join(', ') }}</p>
+        </div>
+        <div class="col">
+            <label>Prenom</label>
+            {{ form_widget(userform.prenom, { 'attr' : { 'placeholder' : 'Prenom', 'class' : userform.prenom.vars.valid ? '' : 'input-error' } }) }}
+            <p id="error-prenom" class="error-message">{{ form_errors(userform.prenom)|join(', ') }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="single-input-fields">
+    <label>Email</label>
+    {{ form_widget(userform.email, { 'attr' : { 'placeholder':'Email', 'class' : userform.email.vars.valid ? '' : 'input-error' } }) }}
+    <p id="error-email" class="error-message">{{ form_errors(userform.email)|join(', ') }}</p>
+</div>
+
+<div class="single-input-fields">
+    <label>Password</label>
+    {{ form_widget(userform.password, { 'attr' : { 'placeholder' : 'Enter Password', 'class' : userform.password.vars.valid ? '' : 'input-error' } }) }}
+    <p id="error-password" class="error-message">{{ form_errors(userform.password)|join(', ') }}</p>
+</div>
+
+<div class="single-input-fields">
+    <label>Confirm password</label>
+    {{ form_widget(userform.confirmPassword, { 'attr' : { 'placeholder' : 'confirm Password', 'class' : userform.confirmPassword.vars.valid ? '' : 'input-error' } }) }}
+    <p id="error-confirmPassword" class="error-message">{{ form_errors(userform.confirmPassword)|join(', ') }}</p>
+</div>
+
+<div class="single-input-fields">
+    <label>Vous etes</label>
+    {{ form_widget(userform.roles, { 'attr' : { 'placeholder' : 'vous etes', 'class' : userform.roles.vars.valid ? '' : 'input-error' } }) }}
+    <p id="error-roles" class="error-message">{{ form_errors(userform.roles)|join(', ') }}</p>
+</div>
+
+            </div>
+
+            <div class="login-footer">
+                {{ form_widget(userform.submit, { 'attr' : { 'class' : 'submit-btn3', 'style': 'background-color: #C21A1A;' } }) }}
+            </div>
+        </div>
+        {{ form_end(userform) }}
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+<script src="{{ asset('assets/js/sweetalert2@11.js') }}"></script>
+<script>
+    {% if sameEmail is defined %}
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "Cet e-mail est déjà pris.",
+    })
+    {% endif %}
+    {% if message is defined %}
+    Swal.fire({
+        icon: 'success',
+        title: 'Verifier votre compte',
+        text: "{{ message|raw }}",
+    }).then((result) => {
+        window.location.href = "{{ path('app_login') }}"
+    })
+    {% endif %}
+
+    {% if message is defined %}
+        Swal.fire({
+            icon: 'success',
+            title: 'Verifier votre compte',
+            text: "{{ message|raw }}",
+        }).then((result) => {
+            window.location.href = "{{ path('app_login') }}"
+        })
+    {% endif %}
+
+
+
+{% endblock %}
