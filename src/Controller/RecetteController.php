@@ -31,6 +31,18 @@ class RecetteController extends AbstractController
             'recettes' => $recetteRepository->findAll(),
         ]);
     }
+    #[Route('/search', name: 'app_recette_search', methods: ['POST'])]
+    public function search(Request $request, RecetteRepository $recetteRepository): Response
+    {
+        $searchTitle = $request->request->get('search_title');
+    
+        // Utilisez $searchTitle pour rechercher dans la base de données
+        $recettes = $recetteRepository->findByTitle($searchTitle); // Exemple fictif
+    
+        return $this->render('recette/index.html.twig', [
+            'recettes' => $recettes,
+        ]);
+    }
     #[Route('/new', name: 'app_recette_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

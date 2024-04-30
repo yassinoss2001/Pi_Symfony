@@ -7,7 +7,8 @@
 {% block body %}
     <style>
         .create-new-button {
-            display: inline-block;
+           display: block; /* Convertir en bloc pour la marge supérieure */
+        margin-top: 49px; /* Ajouter de l'espace en haut du bouton */
             padding: 10px 20px;
             background-color: #4CAF50; /* Green background */
             color: white;
@@ -37,6 +38,37 @@
     float: left;
     margin-right: -136px; /* Ajoutez une marge à droite si nécessaire */
 }
+ /* Styles for the search form */
+    .search-form {
+        text-align: center; /* Centrer le contenu du formulaire */
+        margin-bottom: 20px; /* Espacement en bas pour l'esthétique */
+    }
+
+    .search-form input[type="text"] {
+        padding: 10px; /* Ajouter un peu de rembourrage pour une meilleure apparence */
+        width: 70%; /* Largeur du champ de recherche */
+        border: 1px solid #ccc; /* Bordure légère autour du champ */
+        border-radius: 5px; /* Coins arrondis */
+        display: inline-block; /* Afficher en ligne avec le bouton */
+        vertical-align: middle; /* Aligner verticalement au centre */
+        box-sizing: border-box; /* Inclure la taille de la bordure dans la largeur */
+        background-color: white;
+    }
+
+    .search-form button[type="submit"] {
+        padding: 10px 20px; /* Rembourrage pour le bouton */
+        background-color: red; /* Couleur de fond rouge */
+        color: white; /* Texte blanc */
+        border: none; /* Pas de bordure */
+        border-radius: 5px; /* Coins arrondis */
+        cursor: pointer; /* Curseur de souris */
+        display: inline-block; /* Afficher en ligne avec le champ de saisie */
+        vertical-align: middle; /* Aligner verticalement au centre */
+    }
+
+    .search-form button[type="submit"]:hover {
+        background-color: darkred; /* Couleur plus foncée au survol */
+    }
     </style>
     <main>
         <section class="section section-divider white blog" id="blog">
@@ -48,8 +80,12 @@
                     Espace<span class="span">Recettes</span>
                 </h2>
                 <p class="section-text">Explorez les délicieuses créations de nos clients et découvrez de nouvelles recettes à essayer chez vous !</p>
+<form action="{{ path('app_recette_search') }}" method="post" class="search-form">
+    <input type="text" name="search_title" placeholder="Rechercher par titre...">
+    <button type="submit">Rechercher</button>
+</form>
                 <ul class="blog-list">
-                    {% for recette in recettes %}
+{% for recette in recettes|slice(0, 9) %}
                         <li>
                             <div class="blog-card">
                                 <div class="card-banner">
@@ -79,13 +115,12 @@
                             </div>
                         </li>
                     {% else %}
-                        <li>
-                            <p>No records found</p>
-                        </li>
+          <p>Aucune recette trouvée.</p>
                     {% endfor %}
                 </ul>
                 <a href="{{ path('app_recette_new') }}" class="create-new-button">Create new</a>
             </div>
         </section>
     </main>
+    
 {% endblock %}
