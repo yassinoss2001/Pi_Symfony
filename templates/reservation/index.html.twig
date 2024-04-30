@@ -1,39 +1,42 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
 
-{% block title %}Reservation index{% endblock %}
+{% block title %}liste des réservations{% endblock %}
 
 {% block body %}
-    <h1>Reservation index</h1>
+    <h1 style="text-align: center; margin-top: 20px; margin-bottom: 20px;">liste des réservations</h1> <!-- Ajout de la marge supérieure -->
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date_reservation</th>
-                <th>Nombre_participants</th>
-                <th>Email_contact</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reservation in reservations %}
-            <tr>
-                <td>{{ reservation.id }}</td>
-                <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.nombreParticipants }}</td>
-                <td>{{ reservation.emailContact }}</td>
-                <td>
-                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div style="margin: 0 auto; width: 60%;"> <!-- Div pour centrer et limiter la largeur -->
+        <table class="table" style="border: 1px solid #ccc; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ccc;">Date de la réservation</th>
+                    <th style="border: 1px solid #ccc;">Nombre de participants</th>
+                    <th style="border: 1px solid #ccc;">Email de contact</th>
+                    <th style="border: 1px solid #ccc;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td style="border: 1px solid #ccc;">{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
+                        <td style="border: 1px solid #ccc;">{{ reservation.nombreParticipants }}</td>
+                        <td style="border: 1px solid #ccc;">{{ reservation.emailContact }}</td>
+                        <td style="border: 1px solid #ccc;">
+                           &nbsp;  &nbsp; <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" style="color: blue;"><i class="fas fa-eye"></i></a> 
+                            &nbsp;&nbsp;&nbsp; &nbsp; 
+                            <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" style="color: green;"><i class="fas fa-edit"></i></a> 
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="border: 1px solid #ccc;">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('app_reservation_new') }}">Create new</a>
+    <div style="text-align: center; margin-top: 20px;"> 
+        <a href="{{ path('app_reservation_new') }}" style="color: blue;"><i class="fas fa-plus-circle"></i> Créer nouveau</a>
+    </div>
 {% endblock %}

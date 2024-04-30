@@ -167,4 +167,9 @@ class User
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->nom; // Assuming 'nomEvent' is a property of your entity that you want to use for string representation
+    }
 }

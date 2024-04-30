@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
+use App\Entity\Evennemnt;
 use App\Form\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,6 +42,58 @@ class ReservationController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/list', name: 'app_reservation_list', methods: ['GET'])]
+public function listReservations(EntityManagerInterface $entityManager): Response
+{
+    // Fetch all reservations from the database
+    $reservations = $entityManager->getRepository(Reservation::class)->findAll();
+
+    return $this->render('reservation/indexf.html.twig', [
+        'reservations' => $reservations,
+    ]);
+}
+
+
+    #[Route('/newf/{id}', name: 'app_reservation_form', methods: ['GET', 'POST'])]
+    public function newf($id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Retrieve the event entity based on the provided ID
+        $event = $entityManager->getRepository(Evennemnt::class)->find($id);
+    
+        // Check if the event exists
+        if (!$event) {
+            throw $this->createNotFoundException('Event not found');
+        }
+    
+        // Create a new reservation instance
+        $reservation = new Reservation();
+    
+        // Set the event ID for the reservation
+        $reservation->setEvennementId($event);
+    
+        // Create the reservation form using the ReservationType form type class
+        $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
+    
+        // Handle form submission
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persist the reservation entity
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+    
+            // Redirect to the reservation index page
+            return $this->redirectToRoute('app_evennemnt_liste_evennements_client', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        // Render the reservation form template
+        return $this->render('reservation/newf.html.twig', [
+            'reservation' => $reservation,
+            'form' => $form->createView(),
+        ]);
+    }
+    
+
 
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response

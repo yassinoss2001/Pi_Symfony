@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use CalendarBundle\CalendarEvents;
+use CalendarBundle\Entity\Event;
+use CalendarBundle\Event\CalendarEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 #[Route('/evennemnt')]
 class EvennemntController extends AbstractController
@@ -20,7 +24,26 @@ class EvennemntController extends AbstractController
         return $this->render('evennemnt/index.html.twig', [
             'evennemnts' => $evennemntRepository->findAll(),
         ]);
+    } 
+    
+    #[Route('/liste_evennements_client', name: 'app_evennemnt_liste_evennements_client')]
+    public function listeEvennementsClient(Request $request, EvennemntRepository $evennemntRepository): Response
+    {
+        return $this->render('evennemnt/ListeEvennemntClient.html.twig', [
+            'evennemnts' => $evennemntRepository->findAll(),
+        ]);
     }
+    #[Route('/calendar', name: 'app_evennemnt_calendar')]
+    public function calendar(EvennemntRepository $evennemntRepository): Response
+    {
+        $evennemnts = $evennemntRepository->findAll(); // Fetch all Evennemnt entities from the repository
+    
+        return $this->render('evennemnt/calendar.html.twig', [
+            'evennemnts' => $evennemnts, // Pass the Evennemnt entities to the template
+        ]);
+    }
+    
+
 
     #[Route('/new', name: 'app_evennemnt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -30,6 +53,15 @@ class EvennemntController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image_path')->getData();
+            if ($imageFile) {
+                $imageFileName = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('images_directory'),
+                    $imageFileName
+                );
+                $evennemnt->setImage_Path($imageFileName);
+            }
             $entityManager->persist($evennemnt);
             $entityManager->flush();
 

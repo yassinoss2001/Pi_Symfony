@@ -1,0 +1,125 @@
+{% extends 'FooterHeader.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .hero {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+            text-align: center;
+        }
+        
+      .title {
+            margin: 0 auto;
+            width: 50%;
+            text-align: center;
+        }
+
+        .containerr {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .card-banner {
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-banner img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .card-banner img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Evennement index{% endblock %}
+
+{% block body %}
+<section class="food-menu" id="food-menu " style="align-items: center; margin-top: 10%;">
+    <div class="container">
+        <div class="hero-content">
+            <div class="row justify-content-center "style="align-items: center; ">
+                {% for evennemnt in evennemnts %}
+                <div class="col-md-8" style="align-items: center; margin-top: 5%;">
+                    <div class="food-menu-card" style="align-items: center;text-align:left; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out; display: flex;">
+                        <img src="{{ asset('uploads/images/' ~ evennemnt.image_path) }}" alt="{{ evennemnt.nomEvent }}" class="img-fluid" style="max-width: 300px; border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+                        <div class="card-banner" style="padding: 30px; flex-grow: 1;">
+                            <h1 style="font-size: 36px; margin-bottom: 10px;">{{ evennemnt.nomEvent }}</h1>
+                            <div style="margin-bottom: 20px;">
+                                <p style="font-size: 18px; color: #666;"><strong>Description:</strong></p>
+                                <p style="font-size: 16px; color: #777;">{{ evennemnt.descEvent }}</p>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Date Début:</strong> {{ evennemnt.dateDebut ? evennemnt.dateDebut|date('Y-m-d') : '' }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Date Fin:</strong> {{ evennemnt.dateFin ? evennemnt.dateFin|date('Y-m-d') : '' }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Lieu:</strong> {{ evennemnt.lieuEvenement }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Participants:</strong> {{ evennemnt.NbrParticipants }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Heure Début:</strong> {{ evennemnt.TimeDebut ? evennemnt.TimeDebut|date('H:i:s') : '' }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Heure Fin:</strong> {{ evennemnt.TimeFin ? evennemnt.TimeFin|date('H:i:s') : '' }}</p>
+                                <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Restaurant:</strong> {{ evennemnt.NameResto }}</p>
+                            </div>
+                        </div>
+                        <div style="width:150px; margin:10px auto;">
+                            <a href="{{ path('app_reservation_form', {'id': evennemnt.id}) }}" class="btn btn-primary">Réservez maintenant</a>
+                        </div>  
+
+                    </div>
+                    
+                </div>
+                {% else %}
+                <div class="col-md-12">
+                    <p>No records found</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

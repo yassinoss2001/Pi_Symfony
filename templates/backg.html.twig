@@ -740,11 +740,11 @@ th {
             <div class="sidebar-submenu">
               <ul>
                 <li>
-                  <a href="../evennemnt">liste des evenements
+                  <a href="{{ path('app_evennemnt_index')}}">liste des evenements
                   </a>
                 </li>
                 <li>
-                  <a href="../evennemnt/new">Ajouter evenement</a>
+                  <a href="{{ path('app_evennemnt_new')}}">Ajouter evenement</a>
                 </li>
               </ul>
             </div>
@@ -757,11 +757,10 @@ th {
             <div class="sidebar-submenu">
               <ul>
                 <li>
-                  <a href="#">Liste des réservations
-                  </a>
+                  <a href="{{ path('app_reservation_index') }}">Liste des réservations</a>
                 </li>
                 <li>
-                  <a href="#">Ajouter réservation</a>
+                  <a href="{{ path('app_reservation_new') }}">Ajouter réservation</a>
                 </li>
               </ul>
             </div>
@@ -805,28 +804,14 @@ th {
               </ul>
             </div>
           </li>
-          <li class="header-menu">
-            <span>Admin</span>
-          </li>
+          
           <li>
-            <a href="#">
-              <i class="fa fa-book"></i>
-              <span>Documentation</span>
-              <span class="badge badge-pill badge-primary">Beta</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
+            <a href="{{ path('app_evennemnt_calendar') }}">
               <i class="fa fa-calendar"></i>
               <span>Calendar</span>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <i class="fa fa-folder"></i>
-              <span>Examples</span>
-            </a>
-          </li>
+
         </ul>
       </div>
 

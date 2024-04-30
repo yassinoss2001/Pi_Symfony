@@ -1,91 +1,143 @@
 {% extends 'backg.html.twig' %}
 
 {% block css %}
-{{ parent() }}
-<style> 
-/* Form container */
-.form-container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-}
+    {{ parent() }}
+    <style>
+        /* Form container */
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
 
-/* Form inputs */
-.form-group {
-    margin-bottom: 20px;
-}
+        /* Form inputs */
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+        .form-group label {
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-right: 10px;
+            color: #333; /* Update label color */
+        }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(50% - 15px); /* Adjust width to fit two inputs in a row with some spacing */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s ease; /* Add transition effect */
+            display: inline-block; /* Make inputs inline-block */
+            vertical-align: middle; /* Align inputs vertically */
+        }
 
-/* Form button */
-.form-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    cursor: pointer;
-}
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #007bff; /* Highlight border on focus */
+            outline: none;
+        }
 
-.form-btn:hover {
-    background-color: #0056b3;
-}
+        /* Form button */
+        .form-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Add transition effect */
+        }
 
+        .form-btn:hover {
+            background-color: #0056b3;
+        }
 
-</style>
+        /* Error message */
+        .text-danger {
+            color: #dc3545; /* Error message color */
+            font-size: 12px;
+            margin-top: 5px; /* Add spacing */
+        }
+    </style>
 {% endblock %}
 
-{% block title %}New Evennemnt{% endblock %}
+{% block title %}Nouvel événement{% endblock %}
 
 {% block body %}
 <main>  
     <article>
         <section class="hero" id="home">
-            <h1>Ajouter un evenement</h1>
+            <h1>Ajouter un événement</h1>
 
             <div class="form-container">
                 {{ form_start(form) }}
-                {{ form_row(form.nom_event, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.desc_event, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.date_debut, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.date_fin, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.lieu_evenement, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.Nbr_participants, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.Time_debut, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.Time_fin, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.NameResto, {'attr': {'class': 'form-group'}}) }}
-                {{ form_row(form.image_path, {'attr': {'class': 'form-group'}}) }}
+                <div class="form-group">
+                    <label for="nom_event">Nom de l'événement :</label>
+                    {{ form_widget(form.nom_event, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="desc_event">Description :</label>
+                    {{ form_widget(form.desc_event, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="date_debut">Date de début :</label>
+                    {{ form_widget(form.date_debut, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="date_fin">Date de fin :</label>
+                    {{ form_widget(form.date_fin, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="lieu_evenement">Lieu :</label>
+                    {{ form_widget(form.lieu_evenement, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="Nbr_participants">Nombre de participants :</label>
+                    {{ form_widget(form.Nbr_participants, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="Time_debut">Heure de début :</label>
+                    {{ form_widget(form.Time_debut, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="Time_fin">Heure de fin :</label>
+                    {{ form_widget(form.Time_fin, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="NameResto">Nom du restaurant :</label>
+                    {{ form_widget(form.NameResto, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label for="image_path" class="event-label">Image :</label>
+                    {{ form_widget(form.image_path, {'attr': {'class': 'form-control event-image_path'}}) }}
+                    {{ form_errors(form.image_path,{'attr':{'class':'text-danger'}}) }}
+                </div>
+
                 {{ form_row(form.user_id, {'attr': {'class': 'form-group'}}) }}
-                <button type="submit" class="form-btn">Submit</button>
+                <button type="submit" class="form-btn">Soumettre</button>
                 {{ form_end(form) }}
             </div>
 
-            <a href="{{ path('app_evennemnt_index') }}">liste des evenements</a>
+            <a href="{{ path('app_evennemnt_index') }}">Liste des événements</a>
         </section>
     </article>
 </main>

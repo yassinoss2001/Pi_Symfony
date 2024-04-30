@@ -1,34 +1,39 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
 
-{% block title %}Reservation{% endblock %}
+{% block title %}Réservation{% endblock %}
 
 {% block body %}
-    <h1>Reservation</h1>
+    <h1 style="text-align: center; margin-top: 20px; margin-bottom: 20px;">Réservation</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ reservation.id }}</td>
-            </tr>
-            <tr>
-                <th>Date_reservation</th>
-                <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Nombre_participants</th>
-                <td>{{ reservation.nombreParticipants }}</td>
-            </tr>
-            <tr>
-                <th>Email_contact</th>
-                <td>{{ reservation.emailContact }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="margin: 0 auto; width: 60%;"> <!-- Div pour centrer et limiter la largeur -->
+        <table class="table" style="border: 1px solid #ccc; border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <th style="border: 1px solid #ccc;">Identifiant</th>
+                    <td style="border: 1px solid #ccc;">{{ reservation.id }}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #ccc;">Date de réservation</th>
+                    <td style="border: 1px solid #ccc;">{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #ccc;">Nombre de participants</th>
+                    <td style="border: 1px solid #ccc;">{{ reservation.nombreParticipants }}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #ccc;">Email de contact</th>
+                    <td style="border: 1px solid #ccc;">{{ reservation.emailContact }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+    <div style="text-align: center; margin-top: 20px;"> <!-- Div pour centrer les liens -->
+        <a href="{{ path('app_reservation_index') }}" style="color: blue;"><i class="fas fa-list"></i> Retour à la liste</a>&nbsp;&nbsp; <!-- Ajout d'espaces entre les liens -->
+        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" style="color: green;"><i class="fas fa-edit"></i> Modifier</a>
+    </div>
 
-    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-
-    {{ include('reservation/_delete_form.html.twig') }}
+    <div style="text-align: center; margin-top: 20px;"> <!-- Div pour centrer le bouton de suppression -->
+        {{ include('reservation/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

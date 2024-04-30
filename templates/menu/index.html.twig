@@ -1,27 +1,101 @@
-{% extends 'FooterHeader.html.twig' %}
-{%block s%}
-<title>
-Espace Menu
-</title>
-{%endblock%}
+{% extends 'backg.html.twig' %}
+
+{% block title %}Menu index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .table-container {
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            width:200px;
+     
+            text-align: left;
+        }
+        .table th {
+            color: #DDDDDD;
+            font-weight: 600;
+            background-color: #31353D;
+        }
+        .table td {
+       height:100px;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .btn-show {
+            background-color: #fd7e14;
+            border-color: #fd7e14;
+        }
+        .btn-edit {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-create {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .create-new-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .title-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
+    <div class="title-container">
+        <h1>Vos menus</h1>
+    </div>
 
-<main>
-<article>
-<section class="hero" id="home" >   
+    <div class="table-container">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Calories</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus %}
+                <tr>
+                    <td>{{ menu.id }}</td>
+                    <td>{{ menu.nom }}</td>
+                    <td>{{ menu.prix }}</td>
+                    <td>{{ menu.calories }}</td>
+                    <td>{{ menu.description }}</td>
+                         <td><img src="{{ asset('uploads/images/' ~ menu.image) }}" alt="{{ menu.nom }}" style="max-width: 100px;"></td>
+                    <td>
+                        <button class="btn btn-sm btn-edit"><a href="{{ path('app_menu_show', {'id': menu.id}) }}" style="color: white;">Show</a></button>
+                        <button class="btn btn-sm btn-edit"><a href="{{ path('app_menu_edit', {'id': menu.id}) }}" style="color: white;">Edit</a></button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">No records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-
-
-
-
-<h1>Espace Menu</h1>
-
-
-
-
- </section>
-</main>
-</article>
-
+    <div class="buttons">
+        <button class="btn btn-primary btn-create"><a href="{{ path('app_menu_new') }}" style="color: white;">Create new</a></button>
+    </div>
 {% endblock %}

@@ -3,15 +3,33 @@
 {% block css %}
     {{ parent() }}
     <style>
+        .card-banner {
+            width: 200px; /* Adjust width as needed */
+            height: auto; /* Let the height adjust according to image aspect ratio */
+            border: 1px solid #ccc; /* Add border to create a frame */
+            border-radius: 8px; /* Rounded corners for the card */
+            overflow: hidden; /* Ensure image stays within the card */
+            margin: 0 auto; /* Center the card horizontally */
+        }
+
+        .card-banner img {
+            display: block; /* Make sure the image fills the card properly */
+            width: 100%; /* Ensure the image takes the full width of the card */
+            height: auto; /* Let the height adjust according to image aspect ratio */
+        }
+
         table {
-            width: 100%;
+            margin-top:30px;
+            width: 60%;
             border-collapse: collapse;
             border-spacing: 0;
+            text-align: center;
+            margin-left:20%;
         }
 
         th, td {
             padding: 12px;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid #ddd;
         }
 
@@ -35,6 +53,10 @@
             text-decoration: none;
             border-radius: 4px;
             transition: background-color 0.3s ease;
+        }
+
+        .btn i {
+            margin-right: 5px; /* Adjust the spacing between the icon and text */
         }
 
         .btn:hover {
@@ -87,15 +109,19 @@
                 <td>{{ evennemnt.NameResto }}</td>
             </tr>
             <tr>
-                <th>Chemin de l'image</th>
-                <td>{{ evennemnt.imagePath }}</td>
+                <th>l'image</th>
+                <td>
+                    <div class="card-banner">
+                        <img src="{{ asset('uploads/images/' ~ evennemnt.image_path) }}" width="60" height="39" loading="lazy"  class="w-100">
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
 
     <div class="buttons">
-        <a href="{{ path('app_evennemnt_index') }}" class="btn">Retour à la liste</a>
-        <a href="{{ path('app_evennemnt_edit', {'id': evennemnt.id}) }}" class="btn">Éditer</a>
+        <a href="{{ path('app_evennemnt_index') }}" class="btn"><i class="fas fa-list"></i> Retour à la liste</a>
+        <a href="{{ path('app_evennemnt_edit', {'id': evennemnt.id}) }}" class="btn"><i class="fas fa-edit"></i> Éditer</a>
         {{ include('evennemnt/_delete_form.html.twig') }}
     </div>
 {% endblock %}

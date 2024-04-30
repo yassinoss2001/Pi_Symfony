@@ -170,12 +170,12 @@ class Evennemnt
         return $this;
     }
 
-    public function getImagePath(): ?string
+    public function getImage_Path(): ?string
     {
         return $this->image_path;
     }
 
-    public function setImagePath(string $image_path): static
+    public function setImage_Path(string $image_path): static
     {
         $this->image_path = $image_path;
 
@@ -222,5 +222,11 @@ class Evennemnt
         }
 
         return $this;
+    
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom_event; // Assuming 'nomEvent' is a property of your entity that you want to use for string representation
     }
 }

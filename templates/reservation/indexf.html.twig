@@ -1,0 +1,90 @@
+{% extends 'FooterHeader.html.twig' %}
+
+{% block css %}
+    <style>
+        .title-container {
+            text-align: center; /* Center the title horizontally */
+            margin-bottom: 20px; /* Add some space between the title and the table */
+        }
+
+        .table-container {
+            margin: 0 auto; /* Center the table horizontally */
+            width: 80%; /* Adjust the width of the container as needed */
+            text-align: center; /* Center the content inside the container */
+        }
+
+        .table {
+            width: 100%; /* Make the table width 100% */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: center; /* Center the content inside table cells */
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .actions {
+            text-align: center;
+        }
+
+        .actions a {
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<section class="food-menu" id="food-menu" style="margin-top: 10%;">
+    <div class="title-container">
+        <h1>Liste des Réservations</h1>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date de Réservation</th>
+                    <th>Nombre de Participants</th>
+                    <th>Contact Email</th>
+                    <th>ID Utilisateur</th>
+                    <th>ID Evénement</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ reservation.nombreParticipants }}</td>
+                    <td>{{ reservation.emailContact }}</td>
+                    <td>{{ reservation.userid }}</td>
+                    <td>{{ reservation.evennementid }}</td>
+                    <td class="actions">
+                        <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Afficher</a>
+                        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">Aucun enregistrement trouvé</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+{% endblock %}

@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 
     {% block stylesheets %}
-        <!-- custom css link -->
-        <link href="{{ asset('assets/css/style1.css') }}" rel="stylesheet">
+        
+
+            <link href="{{ asset('assets/css/style1.css') }}" rel="stylesheet">
     {% endblock %}
 </head>
 
 <body id="top">
-    <!-- #HEADER -->
+   
+   
     <header class="header" data-header>
         <div class="container">
             <img src="{{ asset('assets/images/yammifood.png') }}" width="100" height="100" alt="" aria-hidden="true">
@@ -39,8 +41,12 @@
                         <a href="#blog" class="navbar-link" data-nav-link>Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="navbar-link" data-nav-link>Événement</a>
+                         <a href="{{ path('app_reservation_list') }}" class="navbar-link" data-nav-link>Mes Reservation</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ path('app_evennemnt_liste_evennements_client') }}" class="navbar-link" data-nav-link>Événement</a>
+                    </li>
+                    
                 </ul>
             </nav>
 
@@ -66,7 +72,7 @@
     </div>
 
     {% block body %}
-        {# This block is intentionally left blank to be filled by extending templates #}
+    
     {% endblock %}
 
     {% block javascripts %}

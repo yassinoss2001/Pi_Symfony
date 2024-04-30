@@ -1,0 +1,159 @@
+{% extends 'backg.html.twig' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-details-container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .menu-details-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .menu-details-table {
+            width: 100%;
+            border-collapse: collapse;
+             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+            margin-bottom: 20px;
+        }
+
+        .menu-details-table th, .menu-details-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .menu-details-table th {
+            background-color: #31353D;
+
+            font-weight: bold;
+
+            color: #DDDDDD;
+            text-align: left;
+        }
+
+        .menu-details-table td {
+            background-color: #fff;
+            color: #495057;
+        }
+        .menu-details-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+        }
+        .menu-details-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+        .menu-details-table td img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-container button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-container button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-back {
+            background-color: #007bff;
+        }
+
+        .btn-edit {
+            background-color: #28a745;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-container button:hover {
+            opacity: 0.8;
+        }
+        .btn a{
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover a {
+ 
+    color: #fff;
+}
+
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="menu-details-container">
+        <h1>Détails du menu</h1>
+
+        <table class="menu-details-table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ menu.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ menu.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ menu.prix }}</td>
+                </tr>
+                <tr>
+                    <th>Calories</th>
+                    <td>{{ menu.calories }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ menu.description }}</td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                     <td><img src="{{ asset('uploads/images/' ~ menu.image) }}" alt="{{ menu.nom }}"style="max-width: 300px;"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="buttons">
+            <button class="btn btn-back">
+                <a href="{{ path('app_menu_index') }}">Back to List</a>
+            </button>
+            <button class="btn">
+                <a href="{{ path('app_menu_edit', {'id': menu.id}) }}">Modifier</a>
+            </button>
+
+            {{ include('menu/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

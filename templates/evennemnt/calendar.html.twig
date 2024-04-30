@@ -1,0 +1,71 @@
+{% extends 'backg.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-details-container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    New Reservation
+{% endblock %}
+
+{% block body %}  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <!-- Include FullCalendar CSS styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <!-- Div to display the calendar -->
+    <div id="calendar"></div>
+    
+    <!-- Include FullCalendar JavaScript -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                // Initial calendar view configuration
+                initialView: 'dayGridMonth',
+                // Events to display in the calendar
+                events: [
+                    {% for evennemnt in evennemnts %}
+                        {
+                            title: '{{ evennemnt.nomevent }}', // Use the 'nom_event' property of Evennemnt entity
+                            start: '{{ evennemnt.datedebut|date("Y-m-d") }}',
+                            end: '{{ evennemnt.datefin|date("Y-m-d") }}',
+                            backgroundColor: 'blue', // You can set a default color or handle it dynamically
+                           
+                            // Add other event properties if necessary
+                        },
+                    {% endfor %}
+                ],
+                // Event click handler
+                eventClick: function(info) {
+                    if (info.event.url) {
+                        window.location.href = info.event.url;
+                    }
+                }
+            });
+            // Render the calendar
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
+
+{% endblock %}

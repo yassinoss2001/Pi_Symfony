@@ -1,11 +1,72 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
 
-{% block title %}New Reservation{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .menu-details-container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}
+    Nouvelle Réservation
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Reservation</h1>
+    <main>
+        <article>
+            <div class="menu-details-container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 menu-form">
+                        <h1>Ajouter une Réservation</h1>
+                        {{ form_start(form, {'attr': {'class': 'reservation-form', 'name': 'reservationForm', 'enctype': 'multipart/form-data'}}) }}
 
-    {{ include('reservation/_form.html.twig') }}
+                        <div class="form-group">
+                            <label for="date_reservation" class="reservation-label">Date</label>
+                            {{ form_widget(form.date_reservation, {'attr': {'class': 'form-control reservation-date', 'placeholder' : 'Date' }}) }}
+                            {{ form_errors(form.date_reservation,{'attr':{'class':'text-danger'}}) }}
+                        </div>
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+                        <div class="form-group">
+                            <label for="nombre_participants" class="reservation-label">Nombre des participants</label>
+                            {{ form_widget(form.nombre_participants, {'attr': {'class': 'form-control reservation-participants', 'placeholder' : 'Nombre des participants' }}) }}
+                            {{ form_errors(form.nombre_participants,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email_contact" class="reservation-label">Email</label>
+                            {{ form_widget(form.email_contact, {'attr': {'class': 'form-control reservation-email', 'placeholder' : 'Email' }}) }}
+                            {{ form_errors(form.email_contact,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user_id" class="reservation-label">ID Utilisateur</label>
+                            {{ form_widget(form.user_id, {'attr': {'class': 'form-control', 'placeholder' : 'ID Utilisateur' }}) }}
+                            {{ form_errors(form.user_id,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+                        <div class="form-group" >
+                            <label for="evennement_id" class="reservation-label">ID Evénement</label>
+                            {{ form_widget(form.evennement_id, {'attr': {'class': 'form-control', 'placeholder' : 'ID Evénement' }}) }}
+                            {{ form_errors(form.evennement_id,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+
+                        <div class="buttons">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+                            <a href="{{ path('app_reservation_index') }}" class="btn"><i class="fas fa-arrow-left"></i> Retourner à la liste</a>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
 {% endblock %}

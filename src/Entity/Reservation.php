@@ -63,12 +63,13 @@ class Reservation
         return $this->date_reservation;
     }
 
-    public function setDateReservation(\DateTimeInterface $date_reservation): static
+    public function setDateReservation(?\DateTimeInterface $date_reservation): static
     {
         $this->date_reservation = $date_reservation;
-
+    
         return $this;
     }
+    
 
     public function getNombreParticipants(): ?int
     {
@@ -92,5 +93,15 @@ class Reservation
         $this->email_contact = $email_contact;
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return sprintf(
+            'Reservation #%d: Date: %s, Participants: %d, Contact Email: %s',
+            $this->id,
+            $this->date_reservation->format('Y-m-d'),
+            $this->nombre_participants,
+            $this->email_contact
+        );
     }
 }
