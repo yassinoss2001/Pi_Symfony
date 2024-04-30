@@ -125,6 +125,7 @@
     font-weight: 600;
     opacity: 0.9;
 }
+
 .product-detail ul li span{
     font-weight: 400;
 }
@@ -472,12 +473,24 @@
     border-radius: 5px;
     box-sizing: border-box;
 }
-
+.qr-code-img {
+    width: 136px;
+    height: 129px;
+    position: absolute;
+    top: 328px;
+    right: 48px;
+    z-index: 999;
+}
+.text-danger {
+    color: red; /* Set the text color to red */
+    font-size: 14px; /* Set the font size for the error message */
+    /* Add any other styles you want for error messages */
+}
 </style>
 <main>
         <article>
       <section class="section section-divider white cta">
-<img src="{{ path('qr_code', {'id': recette.id}) }}" alt="QR Code Image">
+<img src="{{ path('qr_code', {'id': recette.id}) }}" alt="QR Code Image" class="qr-code-img">
 
   <div class="card-wrapper">
     <div class="big-card-white"> <!-- Ajoutez cette classe pour la grande carte blanche -->
@@ -493,6 +506,7 @@
             <!-- Card right: Content -->
             <div class="product-content">
                 <h2 class="product-title">{{ recette.titre }}</h2>
+
                 <div class="product-detail">
                     <h2>Description:</h2>
                     <p>{{ recette.description }}</p>
@@ -544,6 +558,8 @@
                         <i class="fab fa-pinterest"></i>
                     </a>
                 </div>
+                
+
             </div>
         </div>
     </div>
@@ -553,7 +569,7 @@
     </div>
         </div>
     </div>
-    
+
 </div>
 
 

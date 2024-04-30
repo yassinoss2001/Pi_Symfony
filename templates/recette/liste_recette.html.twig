@@ -164,6 +164,11 @@
     justify-content: space-between;
     margin-top: 20px;
 }
+ h3 {
+    color: black; /* Couleur jaune */
+    margin-bottom: 20px; /* Espacement en bas */
+    text-align: center; /* Centrage du texte */
+}
 </style>
 
 <main>
@@ -171,7 +176,7 @@
         <main>
     <article>
         <section class="section section-divider white blog" id="blog">
-            <h3>Ma Liste De Recettes</h3>
+            <h3 >Ma Liste De Recettes</h3>
             <ul class="recette-list">
                 {% for recette in recettes %}
                     <li class="recette-item">
@@ -182,10 +187,10 @@
                             <div class="recette-actions">
     <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btnn">Voir la recette</a>
     <a href="{{ path('app_recette_edit', {'id': recette.id}) }}" class="btn btn-edit"><i class="fas fa-edit"></i> Modifier</a>
-    <form method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
-        <button type="submit" class="btn btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
-    </form>
+   <form method="post" action="{{ path('app_recette_delete', {'id': recette.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recette.id) }}">
+    <button class="btn">Delete</button>
+</form>
 </div>
                         </div>
                     </li>
@@ -205,46 +210,7 @@
     </article>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.getElementById('modal');
-    var confirmDeleteBtn = document.getElementById('confirmDelete');
-    var cancelDeleteBtn = document.getElementById('cancelDelete');
 
-    function showModal() {
-        modal.style.display = 'block';
-    }
-
-    function hideModal() {
-        modal.style.display = 'none';
-    }
-
-    // Événement lorsque l'utilisateur clique sur "Supprimer"
-    document.querySelectorAll('.btn-delete').forEach(function (btn) {
-        btn.addEventListener('click', function (event) {
-            event.preventDefault(); // Empêche la soumission du formulaire par défaut
-            showModal();
-            var deleteForm = document.getElementById('deleteForm');
-            var confirmDeleteForm = document.getElementById('confirmDeleteForm');
-
-            // Remplacez l'attribut 'action' du formulaire de suppression par le bon chemin
-            var actionUrl = this.getAttribute('data-delete-url');
-            deleteForm.setAttribute('action', actionUrl);
-        });
-    });
-
-    // Événement lorsque l'utilisateur clique sur "Oui, Supprimer" dans la boîte modale
-    confirmDeleteBtn.addEventListener('click', function () {
-        var deleteForm = document.getElementById('deleteForm');
-        deleteForm.submit(); // Soumettez le formulaire de suppression
-    });
-
-    // Événement lorsque l'utilisateur clique sur "Annuler" dans la boîte modale
-    cancelDeleteBtn.addEventListener('click', function () {
-        hideModal();
-    });
-});
-</script>
 
 
 

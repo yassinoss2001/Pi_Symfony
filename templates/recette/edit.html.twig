@@ -1,22 +1,159 @@
 {% extends 'FooterHeader.html.twig' %}
 
 {% block s %}
-    <title>Modifer Recette</title>
+    <title>Modifier Recette</title>
 {% endblock %}
 
 {% block body %}
+<style>
 
+/* Style général du formulaire card */
+.card-form {
+    max-width: 600px;
+    margin: 125px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+background-color: #f3f3f3;}
+.a
+
+/* Style des titres */
+.card-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style des champs de formulaire */
+.card-form input[type="text"],
+.card-form textarea,
+.card-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333; /* Couleur du texte */
+    background-color: #fff; /* Couleur de fond */
+}
+
+/* Placeholder (texte de suggestion) */
+.card-form input[type="text"]::placeholder,
+.card-form textarea::placeholder,
+.card-form select::placeholder {
+    color: #999; /* Couleur du texte de suggestion */
+}
+
+/* Style pour les champs lorsqu'ils sont en focus */
+.card-form input[type="text"]:focus,
+.card-form textarea:focus,
+.card-form select:focus {
+    outline: none; /* Supprime la bordure de focus */
+    border-color: #007bff; /* Couleur de la bordure en focus */
+}
+
+.card-form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.card-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Style des liens */
+.card-form a {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.card-form a:hover {
+    text-decoration: underline;
+}
+.card-form label {
+    color: #f14141; /* Change la couleur du texte en rouge */
+    font-weight: bold; /* Met le texte en gras */
+    font-style: italic; /* Met le texte en italique */
+}
+.card-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center; /* Centre le texte */
+    color: black; /* Couleur du texte en noir */
+}
+.a {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Aligne les éléments sur le côté gauche */
+    align-items: center; /* Centre les éléments verticalement */
+}
+
+.a img {
+    width: 180px; /* Nouvelle largeur */
+    height: 806px; /* Nouvelle hauteur */
+    margin-right: 10px; /* Espacement entre les images */
+}
+</style>
     <main>
-        <article>
-            <section class="hero" id="home">
-    <h1>Modifer Recette</h1>
+        <article class="a">
+         <img src="{{ asset('assets/images/chef.png') }}">
+    <img src="{{ asset('assets/images/cuisine.png') }}">
+    <img src="{{ asset('assets/images/spatule.png') }}">
+        <img src="{{ asset('assets/images/ustensiles-de-cuisine.png') }}">
 
-    {{ include('recette/_form.html.twig', {'button_label': 'Update'}) }}
+<section class="hero card-form" id="home">
+                <h1>Modifier Ton Recette</h1>
 
-    <a href="{{ path('app_recette_index') }}">back to list</a>
+                {{ form_start(form) }}
 
-    {{ include('recette/_delete_form.html.twig') }}
-    </section>
+                {{ form_errors(form) }}
+
+                <div>
+                    {{ form_label(form.titre) }}
+                    {{ form_widget(form.titre) }}
+                    {{ form_errors(form.titre) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.ingredients) }}
+                    {{ form_widget(form.ingredients) }}
+                    {{ form_errors(form.ingredients) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.etape) }}
+                    {{ form_widget(form.etape) }}
+                    {{ form_errors(form.etape) }}
+                </div>
+                <div>
+                    {{ form_label(form.image) }}
+                    {{ form_widget(form.image) }}
+                    {{ form_errors(form.image) }}
+                </div>
+                  <div>
+                    {{ form_label(form.video) }}
+                    {{ form_widget(form.video) }}
+                    {{ form_errors(form.video) }}
+                </div>
+                <div>
+                    <button type="submit">Update</button>
+                </div>
+
+                {{ form_end(form) }}
+
+                <a href="{{ path('app_recette_index') }}">Retour à la liste</a>
+            </section>
         </article>
     </main>
 {% endblock %}

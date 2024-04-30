@@ -31,7 +31,6 @@ class RecetteController extends AbstractController
             'recettes' => $recetteRepository->findAll(),
         ]);
     }
-
     #[Route('/new', name: 'app_recette_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -202,51 +201,51 @@ public function generateQrCode($id)
     
 }
 
-    #[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
+#[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]
 public function edit(Request $request, Recette $recette, EntityManagerInterface $entityManager): Response
 {
     $form = $this->createForm(RecetteType::class, $recette);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Check if a new image file is uploaded
-        $newImage = $form->get('image')->getData();
-        // Check if a new video file is uploaded
-        $newVideo = $form->get('video')->getData();
+        // Vérifier si les champs d'image et de vidéo sont vides
+        $imageFile = $form->get('image')->getData();
+        $videoFile = $form->get('video')->getData();
 
-        if (!$newImage && !$newVideo) {
-            // If no new image or video is provided, keep the existing ones
-            $recette->setImage($recette->getImage());
-            $recette->setVideo($recette->getVideo());
+        if (!$imageFile && !$videoFile) {
+            // Les champs d'image et de vidéo sont vides, ne pas modifier les données
+            $entityManager->persist($recette); // Non nécessaire, mais pour la clarté
+            $entityManager->flush();
         } else {
-            if ($newImage) {
-                // Handle new image upload
-                $imageFileName = uniqid().'.'.$newImage->guessExtension();
-                $newImage->move(
+            // Au moins un des champs est rempli, traiter les données d'image et de vidéo
+            if ($imageFile) {
+                // Gestion de l'image comme dans votre action new
+                $imageFileName = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
                     $this->getParameter('images_directory'),
                     $imageFileName
                 );
                 $recette->setImage($imageFileName);
             }
-            if ($newVideo) {
-                // Handle new video upload
-                $videoFileName = uniqid().'.'.$newVideo->guessExtension();
-                $newVideo->move(
+            if ($videoFile) {
+                // Gestion de la vidéo comme dans votre action new
+                $videoFileName = uniqid().'.'.$videoFile->guessExtension();
+                $videoFile->move(
                     $this->getParameter('videos_directory'),
                     $videoFileName
                 );
                 $recette->setVideo($videoFileName);
             }
-        }
 
-        $entityManager->flush();
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('app_recette_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    return $this->renderForm('recette/edit.html.twig', [
+    return $this->render('recette/edit.html.twig', [
         'recette' => $recette,
-        'form' => $form,
+        'form' => $form->createView(),
     ]);
 }
 #[Route('/{id}/delete', name: 'app_recette_delete', methods: ['POST'])]
