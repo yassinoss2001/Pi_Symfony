@@ -14,6 +14,7 @@ use CalendarBundle\CalendarEvents;
 use CalendarBundle\Entity\Event;
 use CalendarBundle\Event\CalendarEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/evennemnt')]
 class EvennemntController extends AbstractController
@@ -27,12 +28,24 @@ class EvennemntController extends AbstractController
     } 
     
     #[Route('/liste_evennements_client', name: 'app_evennemnt_liste_evennements_client')]
-    public function listeEvennementsClient(Request $request, EvennemntRepository $evennemntRepository): Response
-    {
-        return $this->render('evennemnt/ListeEvennemntClient.html.twig', [
-            'evennemnts' => $evennemntRepository->findAll(),
-        ]);
-    }
+public function listeEvennementsClient(Request $request, EvennemntRepository $evennemntRepository, PaginatorInterface $paginator): Response
+{
+    // Retrieve all events from the repository
+    $allEvennemntsQuery = $evennemntRepository->findAll();
+
+    // Paginate the query result
+    $evennemnts = $paginator->paginate(
+        $allEvennemntsQuery, // Query to paginate
+        $request->query->getInt('page', 1), // Current page number
+        2 // Number of items per page
+    );
+    return $this->render('evennemnt/ListeEvennemntClient.html.twig', [
+        'evennemnts' => $evennemnts,
+    ]);
+}
+
+
+
     #[Route('/calendar', name: 'app_evennemnt_calendar')]
     public function calendar(EvennemntRepository $evennemntRepository): Response
     {
