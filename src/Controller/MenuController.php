@@ -99,7 +99,7 @@ class MenuController extends AbstractController
             'form' => $form,
         ]);
     }
-
+//delete menu
     #[Route('/{id}', name: 'app_menu_delete', methods: ['POST'])]
     public function delete(Request $request, Menu $menu, EntityManagerInterface $entityManager): Response
     {

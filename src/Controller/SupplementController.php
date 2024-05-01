@@ -92,7 +92,7 @@ class SupplementController extends AbstractController
             'form' => $form,
         ]);
     }
-
+//delete supplement
     #[Route('/{id}', name: 'app_supplement_delete', methods: ['POST'])]
     public function delete(Request $request, Supplement $supplement, EntityManagerInterface $entityManager): Response
     {
