@@ -15,34 +15,52 @@ class Evennemnt
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    #[Assert\NotBlank(message: "Le nom de l'événement ne peut pas être vide.")]
+    #[Assert\Length(max: 100, maxMessage: "Le nom de l'événement ne peut pas dépasser {{ limit }} caractères.")]
     #[ORM\Column(length: 100)]
     private ?string $nom_event = null;
 
+    #[Assert\NotBlank(message: "La description de l'événement ne peut pas être vide.")]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $desc_event = null;
 
+    #[Assert\NotBlank(message: "La date de début ne peut pas être vide.")]
+    #[Assert\Date(message: "Date de début invalide.")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_debut = null;
 
+    #[Assert\NotBlank(message: "La date de fin ne peut pas être vide.")]
+    #[Assert\Date(message: "Date de fin invalide.")]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_fin = null;
 
+    #[Assert\NotBlank(message: "Le lieu de l'événement ne peut pas être vide.")]
+    #[Assert\Length(max: 255, maxMessage: "Le lieu de l'événement ne peut pas dépasser {{ limit }} caractères.")]
     #[ORM\Column(length: 255)]
     private ?string $lieu_evenement = null;
 
+    #[Assert\NotBlank(message: "Le nombre de participants ne peut pas être vide.")]
+    #[Assert\Type(type: "integer", message: "Le nombre de participants doit être un nombre entier.")]
     #[ORM\Column]
     private ?int $Nbr_participants = null;
 
+    #[Assert\NotBlank(message: "L'heure de début ne peut pas être vide.")]
+    #[Assert\Time(message: "Heure de début invalide.")]
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $Time_debut = null;
 
+    #[Assert\NotBlank(message: "L'heure de fin ne peut pas être vide.")]
+    #[Assert\Time(message: "Heure de fin invalide.")]
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $Time_fin = null;
 
+    #[Assert\NotBlank(message: "Le nom du restaurant ne peut pas être vide.")]
+    #[Assert\Length(max: 100, maxMessage: "Le nom du restaurant ne peut pas dépasser {{ limit }} caractères.")]
     #[ORM\Column(length: 100)]
     private ?string $NameResto = null;
 
+    #[Assert\NotBlank(message: "Le chemin de l'image ne peut pas être vide.")]
+    #[Assert\Length(max: 255, maxMessage: "Le chemin de l'image ne peut pas dépasser {{ limit }} caractères.")]
     #[ORM\Column(length: 255)]
     private ?string $image_path = null;
 
