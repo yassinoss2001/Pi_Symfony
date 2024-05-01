@@ -1,13 +1,151 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Utilisation des grilles CSS */
+       .supplement-details-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+     background-color: #F9F6F0;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.supplement-details-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.supplement-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.supplement-details-table th, .supplement-details-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+}
+
+.supplement-details-table th {
+    background-color: #31353D;
+    font-weight: bold;
+    color: #DDDDDD;
+    text-align: left;
+}
+
+.supplement-details-table td {
+    background-color: #fff;
+    color: #495057;
+}
+
+.supplement-details-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.supplement-details-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.supplement-details-table td img {
+    max-width: 100%;
+    height: auto;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-container button a {
+    color: white;
+    text-decoration: none;
+}
+
+.btn-back {
+    background-color: #007bff;
+}
+
+.btn-edit {
+    background-color: #28a745;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-container button:hover {
+    opacity: 0.8;
+}
+
+.btn a {
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover a {
+    color: #fff;
+}
+    </style>  
+{% endblock %}
 
 {% block title %}Edit Supplement{% endblock %}
 
 {% block body %}
-    <h1>Edit Supplement</h1>
-
-    {{ include('supplement/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_supplement_index') }}">back to list</a>
-
-    {{ include('supplement/_delete_form.html.twig') }}
+    <main>
+        <article>
+            <div class="supplement-details-container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 center-content">
+                        <h1>Edit Supplement</h1>
+                      
+                        {{ form_start(form, {'attr': {'class': 'supplement-form', 'name': 'supplementForm', 'enctype': 'multipart/form-data'}}) }}
+                        <div class="form-group">
+                            <label for="nom" class="supplement-label">Nom</label>
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control supplement-nom', 'placeholder' : 'Nom' }}) }}
+                            {{ form_errors(form.nom,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+                        <div class="form-group">
+                            <label for="prix" class="supplement-label">Prix</label>
+                            {{ form_widget(form.prix, {'attr': {'class': 'form-control supplement-prix', 'placeholder' : 'Prix' }}) }}
+                            {{ form_errors(form.prix,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+                        <div class="aa">
+                            <img src="{{ asset('uploads/images/' ~ form.vars.value.image) }}" alt="Supplement Image"style="max-width: 300px;"></td>
+                        </div>
+                        <div class="form-group">
+                            <label for="image" class="supplement-label">Image</label>
+                            {{ form_widget(form.image, {'attr': {'class': 'form-control supplement-image'}}) }}
+                            {{ form_errors(form.image,{'attr':{'class':'text-danger'}}) }}
+                        </div>
+                        <div class="buttons">
+                            <button type="submit" class="btn btn-danger">{{ button_label|default('Update') }}</button>
+                            <a href="{{ path('app_supplement_index') }}" class="btn">Back to list</a>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
 {% endblock %}

@@ -200,4 +200,9 @@ class User
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return 0; // Or any other property/method you want to use as the string representation
+    }
 }

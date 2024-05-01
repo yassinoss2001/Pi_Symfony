@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+ 
+
+
 #[Route('/menu')]
 class MenuController extends AbstractController
 {
@@ -30,6 +35,16 @@ class MenuController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+       
+                if ($imageFile) {
+                $imageFileName = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('images_directory'),
+                    $imageFileName
+                );
+                $menu->setImage($imageFileName);
+            }
             $entityManager->persist($menu);
             $entityManager->flush();
 
@@ -47,9 +62,11 @@ class MenuController extends AbstractController
     {
         return $this->render('menu/show.html.twig', [
             'menu' => $menu,
+            
         ]);
     }
 
+    
     #[Route('/{id}/edit', name: 'app_menu_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Menu $menu, EntityManagerInterface $entityManager): Response
     {
@@ -57,6 +74,21 @@ class MenuController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $existingImage = $menu->getImage();
+        $newImage = $form->get('image')->getData();
+
+        if (!$newImage) {
+            // If no new image is provided, keep the existing one
+            $menu->setImage($existingImage);
+        } else {
+            // If a new image is provided, handle it as in the 'new' action
+            $imageFileName = uniqid().'.'.$newImage->guessExtension();
+            $newImage->move(
+                $this->getParameter('images_directory'),
+                $imageFileName
+            );
+            $menu->setImage($imageFileName);
+        }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_menu_index', [], Response::HTTP_SEE_OTHER);

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block t%}<title>Foodie - Supper delicious Burger in town!</title>{%endblock%}
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="{{ asset('../assets/images/yammifood.png') }}" type="image/svg+xml">
+
+
+  <!-- 
+    - custom css link
+  -->
+ 
+ 
+ <link href="../assets/css/style1.css" rel="stylesheet">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Rubik:wght@400;500;600;700&family=Shadows+Into+Light&display=swap"
+    rel="stylesheet">
+
+  <!-- 
+    - preload images
+  -->
+  <link rel="preload" as="image" href="../assets/images/hero-banner.png" media="min-width(768px)">
+  <link rel="preload" as="image" href="../assets/images/hero-banner-bg.png" media="min-width(768px)">
+  <link rel="preload" as="image" href="../assets/images/hero-bg.jpg">
+
+</head>
+
+<body id="top">
+  <!-- 
+    - #HEADER
+  -->
+<div id="loading-spinner">
+
+    <img src="../assets/images/burg.gif" alt="Loading...">
+  </div>
+  <header class="header" data-header>
+    <div class="container">
+    <!--=============== NAV MENU ===============-->
+            <div class="nav__menu" id="nav-menu">
+               <ul class="nav__list">
+                  <!--=============== DROPDOWN 1 ===============-->
+                  <li class="dropdown__item">
+                     <div class="nav__link">
+                        Analytics <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                     </div>
+
+                     <ul class="dropdown__menu">
+                        <li>
+                            <a href="{{ path('app_restaurant') }}" class="dropdown__link">
+                              <i class="ri-pie-chart-line"></i> Restaurant
+                           </a>                          
+                        </li>
+
+                        <li>
+                           <a href="" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Meneu
+                           </a>
+                        </li>
+
+                      <li>
+                           <a href="{{ path('app_livraison') }}" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Livraison
+                           </a>
+                        </li>
+                        <li>
+                           <a href="" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Recette
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{ path('app_evenement') }}" class="dropdown__link">
+                              <i class="ri-arrow-up-down-line"></i> Evenement
+                           </a>
+                        </li>
+                        
+                  
+               </ul>
+            </div>  
+<img src="../assets/images/yammifood.png" width="100" height="100" alt="" aria-hidden="true">
+      <h1>
+  
+    <a href="#" class="logo">YammiFood<span class="span">.</span></a>
+</h1>
+
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
+
+          <li class="nav-item">
+            <a href="#home" class="navbar-link" data-nav-link>Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#about" class="navbar-link" data-nav-link>About Us</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#food-menu" class="navbar-link" data-nav-link>MENU</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#blog" class="navbar-link" data-nav-link>Blog</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="navbar-link" data-nav-link>Événement</a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="header-btn-group">
+        <button class="search-btn" aria-label="Search" data-search-btn>
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+
+        <button class="btn btn-hover">Panier</button>
+
+        <button class="nav-toggle-btn" aria-label="Toggle Menu" data-menu-toggle-btn>
+          <span class="line top"></span>
+          <span class="line middle"></span>
+          <span class="line bottom"></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+
+
+
+
+  <!-- 
+    - #SEARCH BOX
+  -->
+
+  <div class="search-container" data-search-container>
+
+    <div class="search-box">
+      <input type="search" name="search" aria-label="Search here" placeholder="Type keywords here..."
+        class="search-input">
+
+      <button class="search-submit" aria-label="Submit search" data-search-submit-btn>
+        <ion-icon name="search-outline"></ion-icon>
+      </button>
+    </div>
+
+    <button class="search-close-btn" aria-label="Cancel search" data-search-close-btn></button>
+
+  </div>
+
+
+<main>
+<article>
+   {% block body %}
+        {# This block is intentionally left blank to be filled by extending templates #}
+    {% endblock %}
+    </article>
+</main>
+ 
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+ 
+  <footer class="footer">
+
+    <div class="footer-top" style="background-image: url('../assets/images/footer-illustration.png')">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <a href="" class="logo">YammiFood<span class="span">.</span></a>
+
+          <p class="footer-text">
+            Pour tout conseil ou information sur nos offres spéciales, nos restaurants partenaires ou le fonctionnement de l'application, vous pouvez nous contacter à tout moment. Notre équipe est là pour répondre à toutes vos questions et 
+            vous aider à profiter pleinement de votre expérience avec notre application de food.
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-pinterest"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Contact Info</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">+216-72-564-234</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">YammiFood@Gmail.com</p>
+          </li>
+
+      
+
+        </ul>
+
+        
+
+        
+
+          
+    </div>
+
+    
+
+  </footer>
+ 
+
+
+
+
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn" aria-label="Back to top" data-back-top-btn>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="../assets/js/script1.js" defer></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

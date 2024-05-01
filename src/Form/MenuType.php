@@ -6,6 +6,7 @@ use App\Entity\Menu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MenuType extends AbstractType
 {
@@ -16,8 +17,11 @@ class MenuType extends AbstractType
             ->add('prix')
             ->add('calories')
             ->add('description')
-            ->add('image')
-        ;
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+                'required' => true,
+                'data_class' => null, // Update to handle file uploads properly
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

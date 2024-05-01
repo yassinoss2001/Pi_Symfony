@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SupplementRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SupplementRepository::class)]
@@ -17,7 +16,7 @@ class Supplement
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 0)]
     private ?string $prix = null;
 
     #[ORM\Column(length: 255)]

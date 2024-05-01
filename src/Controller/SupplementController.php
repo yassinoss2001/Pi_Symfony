@@ -30,6 +30,16 @@ class SupplementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+       
+                if ($imageFile) {
+                $imageFileName = uniqid().'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('images_directory'),
+                    $imageFileName
+                );
+                $supplement->setImage($imageFileName);
+            }
             $entityManager->persist($supplement);
             $entityManager->flush();
 
@@ -57,6 +67,21 @@ class SupplementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $existingImage = $supplement->getImage();
+        $newImage = $form->get('image')->getData();
+
+        if (!$newImage) {
+            // If no new image is provided, keep the existing one
+            $supplement->setImage($existingImage);
+        } else {
+            // If a new image is provided, handle it as in the 'new' action
+            $imageFileName = uniqid().'.'.$newImage->guessExtension();
+            $newImage->move(
+                $this->getParameter('images_directory'),
+                $imageFileName
+            );
+            $supplement->setImage($imageFileName);
+        }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_supplement_index', [], Response::HTTP_SEE_OTHER);

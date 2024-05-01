@@ -6,6 +6,7 @@ use App\Entity\Supplement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class SupplementType extends AbstractType
 {
@@ -14,8 +15,11 @@ class SupplementType extends AbstractType
         $builder
             ->add('nom')
             ->add('prix')
-            ->add('image')
-        ;
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+                'required' => true,
+                'data_class' => null, // Update to handle file uploads properly
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,65 +1,120 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
 
 {% block title %}Supplement{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <style>
-        .supplement-details-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-        }
-        .supplement-details-container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .supplement-details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .supplement-details-table th, .supplement-details-table td {
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            text-align: left;
-        }
-        .supplement-details-table th {
-            background-color: #f8f9fa;
-            color: #343a40;
-            font-weight: 600;
-        }
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .btn-container a {
-            margin: 0 10px;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        .btn-back {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-edit {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
+      .supplement-details-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+   
+    border-radius: 5px;
+    background-color: #fff;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.supplement-details-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.supplement-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.supplement-details-table th, .supplement-details-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+}
+
+.supplement-details-table th {
+    background-color: #FF0000;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.supplement-details-table td {
+    background-color: #FFFFFF;
+    color: #495057;
+}
+
+.supplement-details-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.supplement-details-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.supplement-details-table td img {
+    max-width: 100%;
+    height: auto;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-container button a {
+    color: white;
+    text-decoration: none;
+}
+
+.btn-back {
+    background-color: #007bff;
+}
+
+.btn-edit {
+    background-color: #28a745;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-container button:hover {
+    opacity: 0.8;
+}
+
+.btn a {
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover a {
+    color: #fff;
+}
+
+
     </style>
 {% endblock %}
 
 {% block body %}
     <div class="supplement-details-container">
-        <h1>Détails du supplement</h1>
+        <h1>- Détails du {{ supplement.nom }} -</h1>
 
         <table class="supplement-details-table">
             <tbody>
@@ -77,15 +132,22 @@
                 </tr>
                 <tr>
                     <th>Image</th>
-                    <td><img src="{{ supplement.image }}" alt="{{ supplement.nom }}" style="max-width: 100%;"></td>
+                 <td><img src="{{ asset('uploads/images/' ~ supplement.image) }}" alt="{{ supplement.nom }}" style="max-width: 50%;"></td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="btn-container">
-            <a href="{{ path('app_supplement_index') }}" class="btn btn-back">Back to List</a>
-            <a href="{{ path('app_supplement_edit', {'id': supplement.id}) }}" class="btn btn-edit">Edit</a>
-            <a href="{{ path('app_supplement_delete', {'id': supplement.id}) }}" class="btn btn-delete">Delete</a>
+    
+            <div class="buttons">
+            <button class="btn btn-danger">
+                <a href="{{ path('app_supplement_index') }}">Back to List</a>
+            </button>
+            <button class="btn btn-danger">
+                <a href="{{ path('app_supplement_edit', {'id': supplement.id}) }}">Modifier</a>
+            </button>
+
+            {{ include('supplement/_delete_form.html.twig') }}
         </div>
+         
     </div>
 {% endblock %}

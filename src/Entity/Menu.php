@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MenuRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 class Menu
@@ -15,15 +16,25 @@ class Menu
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: 'numeric', message: 'Le prix doit être un nombre.')]
+    #[Assert\PositiveOrZero(message: 'Le prix doit être un nombre positif.')]
     private ?string $prix = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Les calories ne peuvent pas être vides.')]
+    #[Assert\Type(type: 'integer', message: 'Les calories doivent être un nombre entier.')]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'Les calories doivent être un nombre entier non négatif.')]
     private ?int $calories = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

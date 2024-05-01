@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'backg.html.twig' %}
 
 {% block title %}Menu index{% endblock %}
 
@@ -6,30 +6,32 @@
     {{ parent() }}
     <style>
         .table-container {
-            max-width: 800px;
+            max-width: 90%;
             margin: 0 auto;
         }
         .table {
-            width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
         .table th, .table td {
-            border: 1px solid #dee2e6;
-            padding: 8px;
+            border: 1px solid #FF0000;
+            width:200px;
             text-align: left;
         }
         .table th {
-            background-color: #f8f9fa;
-            color: #343a40;
+            color: #FFFFFF;
             font-weight: 600;
+            background-color: #FF0000;
+        }
+        .table td {
+            height:100px;
         }
         .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, 0.05);
+            background-color: #F9F6F0;
         }
         .btn-show {
-            background-color: #fd7e14;
-            border-color: #fd7e14;
+            background-color: #FF0000;
+            border-color: #FF0000;
         }
         .btn-edit {
             background-color: #007bff;
@@ -52,7 +54,8 @@
 
 {% block body %}
     <div class="title-container">
-        <h1>Vos menus</h1>
+        <h1>- Vos menus -</h1>
+        <input type="text" id="searchInput" placeholder="Rechercher par titre..." onkeyup="searchFunction()">
     </div>
 
     <div class="table-container">
@@ -68,18 +71,18 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="blog-list">
                 {% for menu in menus %}
                 <tr>
                     <td>{{ menu.id }}</td>
-                    <td>{{ menu.nom }}</td>
+                    <td class="menu-name">{{ menu.nom }}</td>
                     <td>{{ menu.prix }}</td>
                     <td>{{ menu.calories }}</td>
                     <td>{{ menu.description }}</td>
-                    <td>{{ menu.image }}</td>
+                    <td><img src="{{ asset('uploads/images/' ~ menu.image) }}" alt="{{ menu.nom }}" style="max-width: 100px;"></td>
                     <td>
-                        <button class="btn btn-sm btn-show"><a href="{{ path('app_menu_show', {'id': menu.id}) }}" style="color: white;">Show</a></button>
-                        <button class="btn btn-sm btn-edit"><a href="{{ path('app_menu_edit', {'id': menu.id}) }}" style="color: white;">Edit</a></button>
+                        <button class="btn btn-sm btn-danger"><a href="{{ path('app_menu_show', {'id': menu.id}) }}" style="color: white;">Show</a></button>
+                        <button class="btn btn-sm btn-danger"><a href="{{ path('app_menu_edit', {'id': menu.id}) }}" style="color: white;">Edit</a></button>
                     </td>
                 </tr>
                 {% else %}
@@ -91,7 +94,29 @@
         </table>
     </div>
 
-    <div class="create-new-container">
-        <button class="btn btn-primary btn-create"><a href="{{ path('app_menu_new') }}" style="color: white;">Create new</a></button>
+    <div class="buttons">
+        <button class="btn btn-danger btn-create"><a href="{{ path('app_menu_new') }}" style="color: white;">Create new</a></button>
     </div>
+
+    <script>
+        function searchFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementsByClassName('table')[0];
+            tr = table.getElementsByTagName('tr');
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByClassName("menu-name")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 {% endblock %}
