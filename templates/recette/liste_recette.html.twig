@@ -169,14 +169,24 @@
     margin-bottom: 20px; /* Espacement en bas */
     text-align: center; /* Centrage du texte */
 }
+   .btn-green {
+        background-color: #28a745; /* Couleur verte */
+        color: #fff; /* Texte blanc */
+        /* Ajoutez d'autres styles selon vos besoins */
+        border-radius: 30px;
+    }
+     
 </style>
 
 <main>
     <article>
         <main>
     <article>
+
         <section class="section section-divider white blog" id="blog">
             <h3 >Ma Liste De Recettes</h3>
+<a href="{{ path('app_recette_export') }}" class="btn btn-green">Exporter vers Excel</a>
+
             <ul class="recette-list">
                 {% for recette in recettes %}
                     <li class="recette-item">

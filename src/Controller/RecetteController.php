@@ -17,6 +17,11 @@ use App\Form\AvisType;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Endroid\QrCode\Writer\PngWriter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 
 
@@ -130,6 +135,91 @@ $recette->setIngredients($ingredientsConcat);
         return $this->render('recette/liste_recette.html.twig', [
             'recettes' => $recettes,
         ]);
+    }
+    #[Route('/export', name: 'app_recette_export', methods: ['GET'])]
+    public function export(RecetteRepository $recetteRepository): BinaryFileResponse
+    {
+        // Récupérer toutes les recettes depuis la base de données
+        $recettes = $recetteRepository->findAll();
+    
+        // Créer un nouveau document Excel
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        // Ajouter les en-têtes de colonne
+        $sheet->setCellValue('A1', 'Titre');
+        $sheet->setCellValue('B1', 'Description');
+        $sheet->setCellValue('C1', 'Ingrédients');
+        $sheet->setCellValue('D1', 'Étapes');
+        $sheet->setCellValue('E1', 'Image');
+    
+        // Remplir les données des recettes dans le document Excel
+        $row = 2;
+        foreach ($recettes as $recette) {
+            $sheet->setCellValue('A' . $row, $recette->getTitre());
+            $sheet->setCellValue('B' . $row, $recette->getDescription());
+            $sheet->setCellValue('C' . $row, $recette->getIngredients());
+            
+            // Split les étapes par saut de ligne
+            $etapesArray = explode("\n", $recette->getEtape());
+            $etapesStr = "";
+            foreach ($etapesArray as $key => $etape) {
+                $etapesStr .= "Étape " . ($key + 1) . ": " . $etape . "\n";
+            }
+            $sheet->setCellValue('D' . $row, $etapesStr);
+    
+            // Ajouter l'image à partir de l'URL
+            $imagePath = $this->getParameter('images_directory') . '/' . $recette->getImage(); // Assurez-vous d'avoir le bon chemin
+            if (file_exists($imagePath)) {
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setPath($imagePath);
+                $drawing->setCoordinates('E' . $row);
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(5);
+                $drawing->setWidth(100); // Réglez la largeur de l'image
+                $drawing->setHeight(100); // Réglez la hauteur de l'image
+                $drawing->setWorksheet($sheet);
+            }
+    
+            $row++;
+        }
+    
+        // Ajuster la largeur des colonnes
+        $sheet->getColumnDimension('A')->setWidth(20); // Largeur de la colonne A
+        $sheet->getColumnDimension('B')->setWidth(30); // Largeur de la colonne B
+        $sheet->getColumnDimension('C')->setWidth(40); // Largeur de la colonne C
+        $sheet->getColumnDimension('D')->setWidth(50); // Largeur de la colonne D
+        $sheet->getColumnDimension('E')->setWidth(20); // Largeur de la colonne E (image)
+    
+        // Centrer le texte dans les cellules
+      // Centrer le texte dans les cellules
+$alignment = new Alignment();
+$alignment->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+// Créez un tableau de styles
+$styleArray = [
+    'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_CENTER,
+    ],
+];
+
+// Appliquer les styles à la plage de cellules
+$sheet->getStyle('A1:E' . ($row - 1))->applyFromArray($styleArray);
+    
+        // Générer le fichier Excel
+        $writer = new Xlsx($spreadsheet);
+        $excelFileName = 'recettes.xlsx'; // Nom du fichier Excel
+        $tempFile = tempnam(sys_get_temp_dir(), $excelFileName);
+        $writer->save($tempFile);
+    
+        // Répondre avec le fichier Excel pour le téléchargement
+        $response = new BinaryFileResponse($tempFile);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $excelFileName
+        );
+    
+        return $response;
     }
     #[Route('/{id}', name: 'app_recette_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Recette $recette, AvisRepository $avisRepository): Response
