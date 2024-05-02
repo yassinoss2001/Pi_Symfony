@@ -9,7 +9,7 @@
 
 /* Style général du formulaire card */
 .card-form {
-    max-width: 600px;
+    width: 568px;
     margin: 125px auto;
     padding: 20px;
     border-radius: 8px;
@@ -91,12 +91,13 @@ background-color: #f3f3f3;}
     flex-wrap: wrap;
     justify-content: flex-start; /* Aligne les éléments sur le côté gauche */
     align-items: center; /* Centre les éléments verticalement */
+     background-color: var(--isabelline);
 }
 
 .a img {
-    width: 180px; /* Nouvelle largeur */
-    height: 806px; /* Nouvelle hauteur */
-    margin-right: 10px; /* Espacement entre les images */
+    width: 180px;
+    height: 607px;
+    margin-right: 91px;
 }
 </style>
     <main>
@@ -104,12 +105,11 @@ background-color: #f3f3f3;}
          <img src="{{ asset('assets/images/chef.png') }}">
     <img src="{{ asset('assets/images/cuisine.png') }}">
     <img src="{{ asset('assets/images/spatule.png') }}">
-        <img src="{{ asset('assets/images/ustensiles-de-cuisine.png') }}">
 
 <section class="hero card-form" id="home">
                 <h1>Modifier Ton Recette</h1>
 
-                {{ form_start(form) }}
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                 {{ form_errors(form) }}
 
