@@ -99,23 +99,16 @@
     {% if message is defined %}
     Swal.fire({
         icon: 'success',
-        title: 'Verifier votre compte',
+        title: 'Verifier votre compte email',
         text: "{{ message|raw }}",
     }).then((result) => {
         window.location.href = "{{ path('app_login') }}"
     })
     {% endif %}
-
-    {% if message is defined %}
-        Swal.fire({
-            icon: 'success',
-            title: 'Verifier votre compte',
-            text: "{{ message|raw }}",
-        }).then((result) => {
-            window.location.href = "{{ path('app_login') }}"
-        })
-    {% endif %}
+</script>
+    
 
 
 
 {% endblock %}
+

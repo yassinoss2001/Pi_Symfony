@@ -29,7 +29,7 @@
 
 
 
-        <form method="post" action="{{ path('app_login') }}">
+        <form method="post" action="{{ path('app_login')  }}" novalidate>
         <div class="login-form">
 
             <div class="login-heading">
@@ -52,7 +52,10 @@
                     <p id="error-password" class="error-message"></p>
                 </div>
 
-
+                <div class="single-input-fields login-check">
+                    
+                    <a href="{{ path('app_forgetPassword') }}" class="f-right" style=color:#C21A1A ;>Forgot Password?</a>
+                </div>
 
             </div>
 

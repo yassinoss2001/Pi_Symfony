@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 
-class UserAPIController extends AbstractController
+class ApiUser extends AbstractController
 {
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
     public function login(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, NormalizerInterface $normalizer): Response
@@ -48,6 +48,7 @@ class UserAPIController extends AbstractController
                 'message' => 'Invalid password',
             ]);
         }
+        
 
         // Authentification réussie
         $connectedUser = $normalizer->normalize($user, 'json', ['groups' => "users"]);
@@ -69,7 +70,7 @@ class UserAPIController extends AbstractController
         $nom = $request->request->get('nom');
         $prenom = $request->request->get('prenom');
         $confirmPassword = $request->request->get('confirmPwd');
-        $role = 'ROLE_USER';
+        $roles = 'ROLE_USER';
 
         // Contrôle de saisie
         if (!$email || !$password || !$nom || !$prenom || !$confirmPassword) {
@@ -89,7 +90,7 @@ class UserAPIController extends AbstractController
         $user->setPrenom($prenom);
         $user->setPassword($hashedPassword);
         $user->setEmail($email);
-        $user->setRoles([$role]);
+        $user->setRoles($roles);
         $user->setIsVerified(false); // Utilisateur non vérifié par défaut
 
         // Persist et flush dans la base de données
