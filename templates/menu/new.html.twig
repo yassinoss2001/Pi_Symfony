@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2 menu-form">
                         <h1>- Create New Menu - </h1>
-                        {{ form_start(form, {'attr': {'class': 'menu-form', 'name': 'menuForm', 'enctype': 'multipart/form-data'}}) }}
+{{ form_start(form, {'attr': {'class': 'menu-form', 'name': 'menuForm', 'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
                         <div class="form-group">
                             <label for="nom" class="menu-label">Nom</label>
                             {{ form_widget(form.nom, {'attr': {'class': 'form-control menu-nom', 'placeholder' : 'Nom' }}) }}

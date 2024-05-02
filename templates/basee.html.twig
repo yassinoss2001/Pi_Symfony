@@ -462,41 +462,64 @@
           </ul>
 
            <ul class="food-menu-list">
-    {% for menu in menuItems %}
-        <li>
-            <div class="food-menu-card">
-                <div class="card-banner">
-                    <img src="{{ asset('uploads/images/' ~ menu.image) }}" width="300" height="300" loading="lazy" alt="{{ menu.nom }}" class="w-100">
-
-                  <button class="btn food-menu-btn"><a href="{{ path('menu_details', {'id': menu.id}) }}" style="color: white; text-decoration: none;">Consulter détails de l'élément</a></button>
-
-                </div>
-                <div class="wrapper">
-                    
-                    <div class="rating-wrapper">
-                        {% for _ in 1..5 %}
-                            <ion-icon name="star"></ion-icon>
-                        {% endfor %}
-                    </div>
-                </div>
-                <h3 class="h3 card-title">{{ menu.nom }}</h3>
-                 <h5 class="h5 card-title">Description: {{ menu.description }}</h5> 
-                <div class="price-wrapper">
-                    <p class="price-text">Price:</p>
-                    <data class="price">{{ menu.prix }}</data>
-                 
-                   
-                
-                </div>
+  {% for menu in menuItems %}
+    <li>
+        <div class="food-menu-card">
+            <div class="card-banner">
+                <img src="{{ asset('uploads/images/' ~ menu.image) }}" width="300" height="300" loading="lazy" alt="{{ menu.nom }}" class="w-100">
+                <button class="btn food-menu-btn"><a href="{{ path('menu_details', {'id': menu.id}) }}" style="color: white; text-decoration: none;">Consulter détails de l'élément</a></button>
+                <!-- Bouton de partage Facebook -->
+                <button class="btn share-btn" onclick="shareOnFacebook('{{ menu.nom }}', '{{ menu.description }}', '{{ menu.image }}')">Partager sur Facebook</button>
+            </div>
+            <div class="wrapper">
                 <div class="rating-wrapper">
-                  <p class="category">Calories: {{ menu.calories }}</p></div>
-         <div class="price-wrapper">
-                 <p class="price-text"> {{ menuLikeCounts[menu.id] }} <i class="fas fa-heart fa-1x"></i></p>
+                    {% for _ in 1..5 %}
+                        <ion-icon name="star"></ion-icon>
+                    {% endfor %}
+                </div>
+            </div>
+            <h3 class="h3 card-title">{{ menu.nom }}</h3>
+            <h5 class="h5 card-title">Description: {{ menu.description }}</h5> 
+            <div class="price-wrapper">
+                <p class="price-text">Price:</p>
+                <data class="price">{{ menu.prix }}</data>
+            </div>
+            <div class="rating-wrapper">
+                <p class="category">Calories: {{ menu.calories }}</p>
+            </div>
+            <div class="price-wrapper">
+                <p class="price-text"> {{ menuLikeCounts[menu.id] }} <i class="fas fa-heart fa-1x"></i></p>
+            </div>
+        </div>
+    </li>
+{% endfor %}
+
+<!-- JavaScript pour le partage sur Facebook -->
+<script>
+    function shareOnFacebook(title, description, image) {
+        var url = window.location.href; // URL actuelle de la page
+
+        // Construire l'URL de partage de Facebook avec les paramètres nécessaires
+        var fbShareUrl = 'https://www.facebook.com/sharer/sharer.php';
+        fbShareUrl += '?u=' + encodeURIComponent(url);
+        fbShareUrl += '&title=' + encodeURIComponent(title);
+        fbShareUrl += '&description=' + encodeURIComponent(description);
+        fbShareUrl += '&picture=' + encodeURIComponent(image);
+
+        // Ouvrir la fenêtre de partage de Facebook
+        window.open(fbShareUrl, '_blank');
+    }
+</script>
+</body>
+		</html>
+      
+      
+      </p>
 
             </div>
              
         </li>
-    {% endfor %}
+   
 </ul>
 
 
