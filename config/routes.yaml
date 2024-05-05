@@ -1,3 +1,56 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+# config/routes.yaml
+app_home:
+    path: /home
+    controller: App\Controller\HomeController::index
+    methods: ['GET']
+user_add:
+    path: /user/signup
+    controller: App\Controller\UserController::Add
+    methods: ['POST']
+
+user_verify_email:
+    path: /user/verifyEmail/{email}
+    controller: App\Controller\UserController::verifyEmail
+    methods: ['GET']
+
+app_login:
+    path: /
+    controller: App\Controller\UserController::login
+
+user_forget_password:
+    path: /user/forgetPassword
+    controller: App\Controller\UserController::forgetPassword
+    methods: ['GET', 'POST']
+
+user_verify_code:
+    path: /user/verifyCode/{email}
+    controller: App\Controller\UserController::verifyCode
+    methods: ['GET']
+
+user_validate_code:
+    path: /user/validateCode
+    controller: App\Controller\UserController::validateCode
+    methods: ['GET']
+
+user_reset_password:
+    path: /user/resetPassword/{email}
+    controller: App\Controller\UserController::resetPassword
+    methods: ['GET', 'POST']
+
+user_display_admin:
+    path: /user/dashboard/admin
+    controller: App\Controller\UserController::DisplayUsersAdmin
+    methods: ['GET']
+
+user_profile:
+    path: /user/profil
+    controller: App\Controller\UserController::profil
+    methods: ['GET']
+
+user_delete:
+    path: /user/users/delete
+    controller: App\Controller\UserController::delete
+    methods: ['GET']

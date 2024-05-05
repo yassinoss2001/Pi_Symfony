@@ -84,7 +84,6 @@ class ApiUser extends AbstractController
 
         // Hachage du mot de passe
         $hashedPassword = $passwordHasher->hashPassword(null, $password);
-
         $user = new User();
         $user->setNom($nom);
         $user->setPrenom($prenom);

@@ -35,6 +35,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/',
+        message: "Le mot de passe doit comporter au moins 8 caractères, dont au moins une lettre majuscule et un chiffre."
+    )]
     private ?string $password = null;
 
     #[Assert\EqualTo(
@@ -44,8 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     private ?string $confirmPassword = null;
 
     #[ORM\Column(length: 255)]
-private ?string $roles ;
-
+    private ?string $roles = null;
 
     #[ORM\Column(type: "boolean")]
     private ?bool $isVerified = false;
@@ -117,20 +120,21 @@ private ?string $roles ;
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): string
-{
-    return $this->roles;
-}
+    public function getRoles(): array
+    {
+        // Si $this->roles est null, retourner un tableau vide
+        return $this->roles ? explode(',', $this->roles) : [];
+    }
+    
+    public function setRoles(array $roles): self
+    {
+        // Convertir le tableau de rôles en une chaîne séparée par des virgules
+        $this->roles = implode(',', $roles);
+        return $this;
+    }
+    
 
-public function setRoles(string $roles): self
-{
-    $this->roles = $roles;
-
-    return $this;
-}
+    
 
 
     public function isVerified(): ?bool
@@ -198,5 +202,9 @@ public function setRoles(string $roles): self
             $this->isVerified,
             $this->verificationCode,
         ] = unserialize($serialized);
+    }
+    public function getRole(): array
+    {
+        return ['LIVREUR','GERANT','CLIENT'];
     }
 }

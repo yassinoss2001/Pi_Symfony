@@ -57,13 +57,14 @@ class UserType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'CLIENT' => 'CLIENT',
-                    'LIVREUR' => 'LIVREUR',
-                    'GERANT' => 'GERANT',
+                    'Client' => 'CLIENT',
+                    'Livreur' => 'LIVREUR',
+                    'Gérant' => 'GERANT',
                 ],
-                'multiple' => false,
-                'expanded' => false,
+                'multiple' => true,
+                'expanded' => true,
             ])
+            
             ->add('submit', SubmitType::class);
     }
 
