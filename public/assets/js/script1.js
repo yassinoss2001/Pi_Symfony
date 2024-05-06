@@ -97,5 +97,5 @@ loadingSpinner.style.display = 'block';
 // Supprimer le spinner après 10 secondes (10000 millisecondes)
 setTimeout(() => {
     loadingSpinner.style.display = 'none';
-}, 2000);
+}, 5000);
 

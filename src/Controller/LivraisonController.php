@@ -36,11 +36,11 @@ class LivraisonController extends AbstractController
         $livraison->setIdLivreur(1);
         $heureDepart = (int) date('H');
         $livraison->setHeureDepart($heureDepart);
-        $commentFieldName = 'comment' . $commandeId;
+        $commentFieldName = 'comment'.$commandeId;
         $comment = $request->request->get($commentFieldName);
-    
-      
-        $livraison->setCommentairesLivreur("En Route");
+        
+        $cleaned=\ConsoleTVs\Profanity\Builder::blocker($comment)->filter();
+        $livraison->setCommentairesLivreur($cleaned);
         $livraison->setEtatLivraison("En cours");
         $commande->setEtatCommande("Livree");
             $entityManager->persist($livraison);

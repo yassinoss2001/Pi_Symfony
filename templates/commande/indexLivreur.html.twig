@@ -3,7 +3,7 @@
 {% block title %}New Commande{% endblock %}
 {% block livreur %}
     <li class="nav-item">
-        <a href="{{ path('app_commande_index_livreur') }}" class="navbar-link" data-nav-link>Mes Livraisons</a>
+        <a href="{{ path('app_livraison_index') }}" class="navbar-link" data-nav-link>Mes Livraisons</a>
     </li>
 {% endblock %}
 {% block content %}
@@ -35,8 +35,8 @@
           <form id="deliveryForm{{ loop.index }}" action="{{ path('app_livraison_new') }}" method="post">
     <input type="hidden" name="commandeId" value="{{ commande.id }}" /> <!-- Hidden input for commandeId -->
     <div class="form-group">
-        <label for="comment{{ loop.index }}">Commentaire:</label>
-        <input type="text" class="form-control" id="comment{{ loop.index }}" name="comment{{ loop.index }}">
+        <label for="comment{{ commande.id }}">Commentaire:</label>
+        <input type="text" class="form-control" id="comment{{ commande.id }}" name="comment{{ commande.id }}">
     </div>
     <button type="submit" class="btn btn-primary">Deliver Now</button>
 </form>

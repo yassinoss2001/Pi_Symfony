@@ -38,6 +38,42 @@
             padding: 5px 10px;
             font-size: 12px;
         }
+     
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination li a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        color: #007bff;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination li a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .pagination li.active a {
+        background-color: #007bff;
+        color: #fff;
+    }
     </style>
     <br>
     <br>
@@ -45,6 +81,14 @@
     <center>
     <h1>Mes Commandes</h1></center>
     <br>
+       <form action="{{ path('app_commande_index_front') }}" method="post">
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date_filter" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<br>
     <br>
     <table>
         <thead>
@@ -81,4 +125,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+     <nav class="pagination-container">
+        {{ knp_pagination_render(commandes) }}
+    </nav>
 {% endblock %}

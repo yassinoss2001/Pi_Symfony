@@ -46,6 +46,17 @@ class CommandeRepository extends ServiceEntityRepository
           ->getResult()
      ;
   }
+  public function ModeP($value): array
+  {
+      return $this->createQueryBuilder('c')
+          ->andWhere('c.modePayement = :val')
+          ->setParameter('val', $value)
+         
+  
+         ->getQuery()
+         ->getResult()
+    ;
+ }
 
 //    public function findOneBySomeField($value): ?Commande
 //    {

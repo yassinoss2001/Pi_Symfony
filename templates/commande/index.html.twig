@@ -1,81 +1,275 @@
 {% extends 'baseBack.html.twig' %}
 
 {% block title %}Commande index{% endblock %}
+{% block search %}
+     <form class="app-search d-none d-lg-block" method="post" action="{{path('app_commande_index')}}">
+                            <div class="position-relative">
+                                <input type="text" name="search" class="form-control" placeholder="Search...">
+                                <span class="bx bx-search-alt"></span>
+                            </div>
+                        </form>
+                        {% endblock %}
+
 
 {% block content %}
-<br>
-<br>
-<br>
-    <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title mb-4">Liste Commandes</h4>
-                                        <div class="table-responsive">
-                                   <table class="table align-middle table-nowrap mb-0">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 20px;">
-                                                            <div class="form-check font-size-16 align-middle">
-                                                                <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                                                <label class="form-check-label" for="transactionCheck01"></label>
-                                                            </div>
-                                                        </th>
-            
-                <th>IdClient</th>
-                <th>IdMenu</th>
-                <th>Adresse</th>
-                <th>Longitude</th>
-                <th>Latitude</th>
-                <th>DateCommande</th>
-                <th>EtatCommande</th>
-                <th>ModePayement</th>
-                <th>Remarque</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
-            <tr>
-                 <td>
-                                                            <div class="form-check font-size-16">
-                                                                <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                                                <label class="form-check-label" for="transactionCheck02"></label>
-                                                            </div>
-                                                        </td>
-                <td>{{ commande.idClient }}</td>
-                <td>{{ commande.idMenu }}</td>
-                <td>{{ commande.adresse }}</td>
-                <td>{{ commande.longitude }}</td>
-                <td>{{ commande.latitude }}</td>
-                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ commande.etatCommande }}</td>
-                <td>{{ commande.modePayement }}</td>
-                <td>{{ commande.remarque }}</td>
-                <td>
-                {% if commande.etatCommande == "En Preparation" %}
-                   
-                    <a style="color:red;" href="{{ path('app_commande_decline', {'id': commande.id}) }}">Annuler</a>
-                    
-                     <a href="{{ path('app_commande_accept', {'id': commande.id}) }}">Accepter</a>
-                     {% endif %}
-                       {{ include('commande/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<style>
 
-      </div>
 
-                                                                     
+/* Style the container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-                                    </div>
-                                </div>
-                            </div>
+/* Style the card */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Style the table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Style table header */
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+}
+
+/* Style table rows */
+.table tbody tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Style table cells */
+.table td, .table th {
+    padding: 12px;
+}
+
+/* Style primary button */
+
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Style danger button */
+.btn-danger {
+    background-color: #dc3545;
+}
+
+/* Style success button */
+.btn-success {
+    background-color: #28a745;
+}
+
+/* Add hover effect to table rows */
+.table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+</style>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Liste des Commandes</h4>
+                        <div class="table-responsive">
+                            <table class="table align-middle table-nowrap mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 20px;">
+                                            <div class="form-check font-size-16 align-middle">
+                                                <input class="form-check-input" type="checkbox" id="selectAll">
+                                                <label class="form-check-label" for="selectAll"></label>
+                                            </div>
+                                        </th>
+                                        <th>IdClient</th>
+                                        <th>IdMenu</th>
+                                        <th>Adresse</th>
+                                        <th>Longitude</th>
+                                        <th>Latitude</th>
+                                        <th>Date de Commande</th>
+                                        <th>État de Commande</th>
+                                        <th>Mode de Paiement</th>
+                                        <th>Remarque</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for commande in commandes %}
+                                        <tr>
+                                            <td>
+                                                <div class="form-check font-size-16">
+                                                    <input class="form-check-input" type="checkbox" id="transactionCheck{{ loop.index }}">
+                                                    <label class="form-check-label" for="transactionCheck{{ loop.index }}"></label>
+                                                </div>
+                                            </td>
+                                            <td>{{ commande.idClient }}</td>
+                                            <td>{{ commande.idMenu }}</td>
+                                            <td>{{ commande.adresse }}</td>
+                                            <td>{{ commande.longitude }}</td>
+                                            <td>{{ commande.latitude }}</td>
+                                            <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d H:i:s') : '' }}</td>
+                                            <td>{{ commande.etatCommande }}</td>
+                                            <td>{{ commande.modePayement }}</td>
+                                            <td>{{ commande.remarque }}</td>
+                                            <td>
+                                                {% if commande.etatCommande == "En Preparation" %}
+                                                    <a class="btn btn-danger btn-sm" href="{{ path('app_commande_decline', {'id': commande.id}) }}">Annuler</a>
+                                                    <a class="btn btn-success btn-sm" href="{{ path('app_commande_accept', {'id': commande.id}) }}">Accepter</a>
+                                                {% endif %}
+                                                {% include('commande/_delete_form.html.twig') %}
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="11">Aucun enregistrement trouvé</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto">						    
+								    <a class="btn app-btn-secondary" href="{{path('app_commande_export')}}">
+									    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+		  <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+		  <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+		</svg>
+									   Export
+									</a>
+							    </div>
+         <div class="col-sm-12 col-lg-4 col-xxl-3">
+            <div class="row">
+			<br>
+			<br>
+                <div class="col-sm-6">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                           
+                        </div>
+                        <canvas style="margin-top:40px;" id="stat1"></canvas>
+                    </div>
+                </div>
+                 <div class="col-sm-6">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            
+                        </div>
+						<br>
+						<br>
+                        <canvas style="margin-left:200px" id="stat2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+</div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css" integrity="sha512-BrXUJgxzXt4hYFhwL52b5XvIoU3N8rFn1K9MfocvzULUHhtUOjXYXH3I/RqRmDd6PA1CrsAmxiZ2HQcyD1VwOQ==" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Bar chart
+        var ctx1 = document.getElementById('stat1').getContext('2d');
+        var labels1 = [];
+        var data1 = [];
+
+        
+            labels1.push('Cash');
+            data1.push({{ Cash|length }});
+            labels1.push('Carte');
+            data1.push({{ Carte|length }});
+        
+
+        var chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: labels1,
+                datasets: [{
+                    label: 'Cash VS Carte',
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 1,
+                    data: data1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true
+						
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#bdc3c7'
+                        },
+                        grid: {
+                            color: '#34495e'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#bdc3c7'
+                        },
+                        grid: {
+                            color: '#34495e'
+                        }
+                    }
+                },
+                // Adjust size
+                responsive: false,
+                maintainAspectRatio: false,
+                aspectRatio: 1
+            }
+        });
+
+        // Pie chart
+        var ctx2 = document.getElementById('stat2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Commandes', 'Livraisons'],
+                datasets: [{
+                    backgroundColor: ['#3498db', '#2ecc71'],
+                    borderColor: '#2c3e50',
+                    borderWidth: 1,
+                    data: [{{ commandes|length }}, {{ livraisons|length }}]
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Commandes vs Livraisons',
+                        color: '#000000'
+                    },
+                    legend: {
+                        labels: {
+                            color: '#000000'
+                        }
+                    }
+                },
+                // Adjust size
+                responsive: false,
+                maintainAspectRatio: false,
+                aspectRatio: 1
+            }
+        });
+    </script>
 {% endblock %}

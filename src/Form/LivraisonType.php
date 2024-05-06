@@ -17,6 +17,7 @@ class LivraisonType extends AbstractType
             ->add('etatLivraison')
             ->add('commentairesLivreur')
             ->add('idCommande')
+            
         ;
     }
 
