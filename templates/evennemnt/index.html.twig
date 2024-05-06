@@ -1,69 +1,97 @@
-    {% extends 'backg.html.twig' %}
-    {% block css %}
+{% extends 'backg.html.twig' %}
+
+{% block css %}
     {{ parent() }}
     <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd; /* Add a simple border */
+        }
 
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd; /* Add a border to table cells */
+        }
 
+        th {
+            background-color: #f2f2f2; /* Background color for table headers */
+        }
+
+        .btn {
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .card-banner img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
     </style>
-    {% endblock %}
+{% endblock %}
 
+{% block title %}Evennemnt index{% endblock %}
 
-
-
-    {% block title %}Evennemnt index{% endblock %}
-
-    {% block body %}
-        <h1>Liste des événements</h1>
+{% block body %}
+    <h1>Liste des événements</h1>
     <div class="containerr">
         <table>
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th>Description</th>
-                    <th>Date debut</th>
+                    <th>Date début</th>
                     <th>Date fin</th>
                     <th>Lieu</th>
                     <th>Nbr participants</th>
-                    <th>temp debut</th>
-                    <th>temp fin</th>
+                    <th>Heure début</th>
+                    <th>Heure fin</th>
                     <th>Nom Resto</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            {% for evennemnt in evennemnts %}
-                <tr>
-                    
-                    <td>{{ evennemnt.nomEvent }}</td>
-                    <td>{{ evennemnt.descEvent }}</td>
-                    <td>{{ evennemnt.dateDebut ? evennemnt.dateDebut|date('Y-m-d') : '' }}</td>
-                    <td>{{ evennemnt.dateFin ? evennemnt.dateFin|date('Y-m-d') : '' }}</td>
-                    <td>{{ evennemnt.lieuEvenement }}</td>
-                    <td>{{ evennemnt.NbrParticipants }}</td>
-                    <td>{{ evennemnt.TimeDebut ? evennemnt.TimeDebut|date('H:i:s') : '' }}</td>
-                    <td>{{ evennemnt.TimeFin ? evennemnt.TimeFin|date('H:i:s') : '' }}</td>
-                    <td>{{ evennemnt.NameResto }}</td>
-                    <td>
-                    
-                    <div class="card-banner"  style="width:100px;">
-                            <img src="{{ asset('uploads/images/' ~ evennemnt.image_path) }}" loading="lazy"  class="w-100" >
-                        </div>
+                {% for evennemnt in evennemnts %}
+                    <tr>
+                        <td>{{ evennemnt.nomEvent }}</td>
+                        <td>{{ evennemnt.descEvent }}</td>
+                        <td>{{ evennemnt.dateDebut ? evennemnt.dateDebut|date('Y-m-d') : '' }}</td>
+                        <td>{{ evennemnt.dateFin ? evennemnt.dateFin|date('Y-m-d') : '' }}</td>
+                        <td>{{ evennemnt.lieuEvenement }}</td>
+                        <td>{{ evennemnt.NbrParticipants }}</td>
+                        <td>{{ evennemnt.TimeDebut ? evennemnt.TimeDebut|date('H:i:s') : '' }}</td>
+                        <td>{{ evennemnt.TimeFin ? evennemnt.TimeFin|date('H:i:s') : '' }}</td>
+                        <td>{{ evennemnt.NameResto }}</td>
+                        <td>
+                            <div class="card-banner" style="width:100px;">
+                                <img src="{{ asset('uploads/images/' ~ evennemnt.image_path) }}" loading="lazy" class="w-100">
+                            </div>
                         </td>
-                    <td>
-                        <a href="{{ path('app_evennemnt_show', {'id': evennemnt.id}) }}" class="btn"><i class="fa fa-eye"></i></a>
-                        <a href="{{ path('app_evennemnt_edit', {'id': evennemnt.id}) }}" class="btn"><i class="fa fa-edit"></i></a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="12">Aucun enregistrement trouvé</td>
-                </tr>
-            {% endfor %}
+                        <td>
+                            <a href="{{ path('app_evennemnt_show', {'id': evennemnt.id}) }}" class="btn"><i class="fa fa-eye"></i></a>
+                            <a href="{{ path('app_evennemnt_edit', {'id': evennemnt.id}) }}" class="btn"><i class="fa fa-edit"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-        <div  class="buttons">
-        <a href="{{ path('app_evennemnt_new') }}"  class="btn"><i class="fa fa-plus"></i> Ajouter un événement</a>
-        </div>
-    {% endblock %}
+    <div class="buttons">
+        <a href="{{ path('app_evennemnt_new') }}" class="btn"><i class="fa fa-plus"></i> Ajouter un événement</a>
+    </div>
+{% endblock %}

@@ -61,7 +61,7 @@
                     <th>Contact Email</th>
                     <th>ID Utilisateur</th>
                     <th>ID Evénement</th>
-                    <th>Actions</th>
+            
                 </tr>
             </thead>
             <tbody>
@@ -72,10 +72,7 @@
                     <td>{{ reservation.emailContact }}</td>
                     <td>{{ reservation.userid }}</td>
                     <td>{{ reservation.evennementid }}</td>
-                    <td class="actions">
-                        <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Afficher</a>
-                        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Modifier</a>
-                    </td>
+                 
                 </tr>
                 {% else %}
                 <tr>
@@ -85,6 +82,7 @@
             </tbody>
         </table>
     </div>
+    
 
 </section>
 {% endblock %}

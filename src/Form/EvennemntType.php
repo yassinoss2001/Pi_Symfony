@@ -76,11 +76,12 @@ class EvennemntType extends AbstractType
             ->add('user_id', null, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                   
+                    
                 ],
             ])
         ;
     }
+   // {{form_start(form,{'attr':{'novalidate':'novalidate'}})}} 
 
     public function configureOptions(OptionsResolver $resolver): void
     {

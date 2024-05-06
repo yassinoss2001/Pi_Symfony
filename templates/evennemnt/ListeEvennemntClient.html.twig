@@ -9,7 +9,7 @@
             text-align: center;
         }
         
-      .title {
+        .title {
             margin: 0 auto;
             width: 50%;
             text-align: center;
@@ -81,10 +81,19 @@
 {% block title %}Evennement index{% endblock %}
 
 {% block body %}
-<section class="food-menu" id="food-menu " style="align-items: center; margin-top: 10%;">
+<section class="food-menu" id="food-menu" style="align-items: center; margin-top: 10%;">
     <div class="container">
         <div class="hero-content">
-            <div class="row justify-content-center "style="align-items: center; ">
+            <div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
+    </div>
+    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un événement" onkeyup="search()">
+</div>
+            <div class="row justify-content-center" style="align-items: center;">
+                <!-- Event listing goes here -->
+            </div>
+            <div class="row justify-content-center" style="align-items: center;">
                 {% for evennemnt in evennemnts %}
                 <div class="col-md-8" style="align-items: center; margin-top: 5%;">
                     <div class="food-menu-card" style="align-items: center;text-align:left; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s ease-in-out; display: flex;">
@@ -105,12 +114,15 @@
                                 <p style="font-size: 18px; color: #666; margin-bottom: 5px;"><strong>Restaurant:</strong> {{ evennemnt.NameResto }}</p>
                             </div>
                         </div>
-                        <div style="width:150px; margin:10px auto;">
+                        <div style="width: 150px; margin: 10px auto;">
                             <a href="{{ path('app_reservation_form', {'id': evennemnt.id}) }}" class="btn btn-primary">Réservez maintenant</a>
-                        </div>  
-
+                            <!-- Add favorite button -->
+                           <a href="{{ path('add_to_favorites', {'id': evennemnt.id}) }}" class="btn btn-success" style="margin-left: 10px; margin-top: 10px;" onclick="toggleFavorite(this)">
+                               <i class="fas fa-heart"></i> Ajouter aux favoris
+                           </a>
+                        </div>
                     </div>
-                    
+                   
                 </div>
                 {% else %}
                 <div class="col-md-12">
@@ -120,7 +132,43 @@
             </div>
         </div>
     </div>
-    <div class="pagination"> {{ knp_pagination_render(evennemnts) }}
-</section>
-{% endblock %}
+    <div class="pagination"> {{ knp_pagination_render(evennemnts) }}</div>
 
+
+</section>
+
+
+
+
+<script>
+
+    function search() {
+        // Get the value of the search input
+        let input = document.getElementById("searchInput");
+        let filter = input.value.toUpperCase();
+
+        // Get all event cards
+        let cards = document.querySelectorAll(".food-menu-card");
+
+        // Loop through all cards and hide or show based on the search
+        cards.forEach(card => {
+            let title = card.querySelector("h1").textContent || card.querySelector("h1").innerText;
+            if (title.toUpperCase().includes(filter)) {
+                card.style.display = "flex"; // Show the card
+            } else {
+                card.style.display = "none"; // Hide the card
+            }
+        });
+    }
+
+    function toggleFavorite(button) {
+        var heartIcon = button.querySelector('.fas.fa-heart');
+        if (heartIcon.classList.contains('text-red')) {
+            heartIcon.classList.remove('text-red');
+        } else {
+            heartIcon.classList.add('text-red');
+        }
+    }
+</script>
+
+{% endblock %}

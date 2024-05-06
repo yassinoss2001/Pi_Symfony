@@ -15,7 +15,7 @@ class Evennemnt
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    #[Assert\NotBlank(message: "Le nom de l'événement ne peut pas être vide.")]
+ #[Assert\NotBlank(message: "Le nom de l'événement ne peut pas être vide.")]
     #[Assert\Length(max: 100, maxMessage: "Le nom de l'événement ne peut pas dépasser {{ limit }} caractères.")]
     #[ORM\Column(length: 100)]
     private ?string $nom_event = null;

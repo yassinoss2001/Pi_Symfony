@@ -4,113 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9edb6973c72899bb9fcf18544013d7e",
+    "content-hash": "d761e750befa2a9120a2ffea4e4028a9",
     "packages": [
-        {
-            "name": "abraham/twitteroauth",
-            "version": "0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/abraham/twitteroauth.git",
-                "reference": "875918bad4f1e9651635ee3107f5edcce34b4acd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/875918bad4f1e9651635ee3107f5edcce34b4acd",
-                "reference": "875918bad4f1e9651635ee3107f5edcce34b4acd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "2.*",
-                "phpunit/phpunit": "4.*",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Abraham\\TwitterOAuth\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Abraham Williams",
-                    "email": "abraham@abrah.am",
-                    "homepage": "https://abrah.am",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
-            "homepage": "https://twitteroauth.com",
-            "keywords": [
-                "api",
-                "oauth",
-                "rest",
-                "social",
-                "twitter"
-            ],
-            "support": {
-                "issues": "https://github.com/abraham/twitteroauth/issues",
-                "source": "https://github.com/abraham/twitteroauth"
-            },
-            "time": "2015-01-22T21:47:15+00:00"
-        },
-        {
-            "name": "alexislefebvre/async-tweets-bundle",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/alexislefebvre/AsyncTweetsBundle.git",
-                "reference": "c136fffd5b594d4380c7c56fc02b32f71074f69d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/alexislefebvre/AsyncTweetsBundle/zipball/c136fffd5b594d4380c7c56fc02b32f71074f69d",
-                "reference": "c136fffd5b594d4380c7c56fc02b32f71074f69d",
-                "shasum": ""
-            },
-            "require": {
-                "abraham/twitteroauth": "0.5.0",
-                "php": ">=5.3.2"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "AlexisLefebvre\\Bundle\\AsyncTweetsBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexis Lefebvre",
-                    "email": "alexislefebvre@gmail.com",
-                    "homepage": "http://alexislefebvre.com/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP Twitter reader for asynchronous reading",
-            "homepage": "http://asynctweets.alexislefebvre.com/",
-            "keywords": [
-                "bundle",
-                "reader",
-                "twitter"
-            ],
-            "support": {
-                "issues": "https://github.com/alexislefebvre/AsyncTweetsBundle/issues",
-                "source": "https://github.com/alexislefebvre/AsyncTweetsBundle/tree/0.1.1"
-            },
-            "time": "2015-04-01T21:52:03+00:00"
-        },
         {
             "name": "doctrine/annotations",
             "version": "2.0.1",
@@ -1579,66 +1474,6 @@
             "time": "2023-10-06T06:47:41+00:00"
         },
         {
-            "name": "endroid/twitter",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/endroid/twitter.git",
-                "reference": "b1ec6a812546e49a683a30d8f3d5016f79e7c6cc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/endroid/twitter/zipball/b1ec6a812546e49a683a30d8f3d5016f79e7c6cc",
-                "reference": "b1ec6a812546e49a683a30d8f3d5016f79e7c6cc",
-                "shasum": ""
-            },
-            "require": {
-                "kriswallsmith/buzz": "^0.10",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7|^6.0",
-                "symfony/http-foundation": "^3.0|^4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Endroid\\Twitter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen van den Enden",
-                    "email": "info@endroid.nl",
-                    "homepage": "https://endroid.nl/"
-                }
-            ],
-            "description": "Endroid Twitter",
-            "homepage": "https://github.com/endroid/twitter",
-            "keywords": [
-                "bundle",
-                "endroid",
-                "php",
-                "symfony",
-                "twitter"
-            ],
-            "support": {
-                "issues": "https://github.com/endroid/twitter/issues",
-                "source": "https://github.com/endroid/twitter/tree/2.0.1"
-            },
-            "abandoned": true,
-            "time": "2018-01-06T11:41:23+00:00"
-        },
-        {
             "name": "knplabs/knp-components",
             "version": "v3.6.0",
             "source": {
@@ -1796,58 +1631,6 @@
                 "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v5.9.0"
             },
             "time": "2022-08-28T14:42:14+00:00"
-        },
-        {
-            "name": "kriswallsmith/buzz",
-            "version": "v0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/759432d66387e3433d3b06cb6f773b97225b9b17",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "ext-curl": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Buzz": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                }
-            ],
-            "description": "Lightweight HTTP client",
-            "homepage": "https://github.com/kriswallsmith/Buzz",
-            "keywords": [
-                "curl",
-                "http client"
-            ],
-            "support": {
-                "issues": "https://github.com/kriswallsmith/Buzz/issues",
-                "source": "https://github.com/kriswallsmith/Buzz/tree/master"
-            },
-            "time": "2013-05-19T03:41:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4153,6 +3936,72 @@
                 }
             ],
             "time": "2024-04-28T08:53:28+00:00"
+        },
+        {
+            "name": "symfony/google-mailer",
+            "version": "v5.4.39",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/google-mailer.git",
+                "reference": "daf8b6ec9035985bb82921de11be75d989e6ad3b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/google-mailer/zipball/daf8b6ec9035985bb82921de11be75d989e6ad3b",
+                "reference": "daf8b6ec9035985bb82921de11be75d989e6ad3b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "psr/event-dispatcher": "^1",
+                "symfony/mailer": "^5.4.21|^6.2.7"
+            },
+            "require-dev": {
+                "symfony/http-client": "^4.4|^5.0|^6.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Google\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Google Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/google-mailer/tree/v5.4.39"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-04-18T08:26:06+00:00"
         },
         {
             "name": "symfony/http-client",

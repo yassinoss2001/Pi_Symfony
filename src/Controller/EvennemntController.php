@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Evennemnt;
+use App\Entity\User;
+use App\Entity\Favoris;
 use App\Form\EvennemntType;
 use App\Repository\EvennemntRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,24 +30,22 @@ class EvennemntController extends AbstractController
     } 
     
     #[Route('/liste_evennements_client', name: 'app_evennemnt_liste_evennements_client')]
-public function listeEvennementsClient(Request $request, EvennemntRepository $evennemntRepository, PaginatorInterface $paginator): Response
-{
-    // Retrieve all events from the repository
-    $allEvennemntsQuery = $evennemntRepository->findAll();
-
-    // Paginate the query result
-    $evennemnts = $paginator->paginate(
-        $allEvennemntsQuery, // Query to paginate
-        $request->query->getInt('page', 1), // Current page number
-        2 // Number of items per page
-    );
-    return $this->render('evennemnt/ListeEvennemntClient.html.twig', [
-        'evennemnts' => $evennemnts,
-    ]);
-}
-
-
-
+    public function listeEvennementsClient(Request $request, EvennemntRepository $evennemntRepository, PaginatorInterface $paginator): Response
+    {
+        // Retrieve all events from the repository
+        $allEvennemntsQuery = $evennemntRepository->findAll();
+    
+        // Paginate the query result
+        $evennemnts = $paginator->paginate(
+            $allEvennemntsQuery, // Query to paginate
+            $request->query->getInt('page', 1), // Current page number
+            2 // Number of items per page
+        );
+    
+        return $this->render('evennemnt/ListeEvennemntClient.html.twig', [
+            'evennemnts' => $evennemnts,
+        ]);
+    }
     #[Route('/calendar', name: 'app_evennemnt_calendar')]
     public function calendar(EvennemntRepository $evennemntRepository): Response
     {
@@ -123,4 +123,58 @@ public function listeEvennementsClient(Request $request, EvennemntRepository $ev
 
         return $this->redirectToRoute('app_evennemnt_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/add_to_favorites/{id}', name: 'add_to_favorites', methods: ['GET', 'POST'])]
+
+    public function addToFavorite(Request $request, Evennemnt $evennemnt, EntityManagerInterface $entityManager): Response
+    {$entityManager = $this->getDoctrine()->getManager();
+
+        // Get the repository for the User entity
+        $userRepository = $entityManager->getRepository(User::class);
+        
+        $firstUser = $userRepository->findOneBy([], ['id' => 'ASC']);
+
+        // Query the database to check if the event is already a favorite for the user
+    $favoris = $entityManager->getRepository(Favoris::class)->findOneBy([
+        'user_id' => $firstUser,
+        'evennemnt' => $evennemnt,
+    ]);
+
+    if ($favoris) {
+        // If the favorite association exists, remove it
+        $entityManager->remove($favoris);
+    } else {
+        // If the favorite association doesn't exist, create a new one
+        $favoris = new Favoris();
+        $favoris->setUserId($firstUser);
+        $favoris->setEvennemnt($evennemnt);
+        $entityManager->persist($favoris);
+    }
+
+    // Persist changes to the database
+    $entityManager->flush();
+
+    // Redirect back to the event details page or any other appropriate page
+    return $this->redirectToRoute('app_evennemnt_liste_evennements_client');
+    }
+ #[Route('/favorite_events', name: 'favorite_events')]
+ public function favoriteEvents(FavorisRepository $favorisRepository): Response
+{$entityManager = $this->getDoctrine()->getManager();
+     $userRepository = $entityManager->getRepository(User::class);
+            
+    $firstUser = this.getUser() ?? $userRepository->findOne;
+        
+    // Fetch favorite events for the current user from the Favoris repository
+    $evennemnts = $evennemnts->findFavoriteEventsByUser($firstUser);
+        
+ // Render the template and pass the favorite events to it
+     return $this->render('evennemnt/ListeEvennemntClientfav.html.twig', [
+       'evennemnts' => $evennemnt,
+     ]);
+        }
+       
+        
 }
+
+
+
