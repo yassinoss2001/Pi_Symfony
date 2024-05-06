@@ -1,5 +1,5 @@
 <?php
-
+//this is the controller of the landing page  of the website
 namespace App\Controller;
 use App\Entity\Menu;
 use App\Entity\Like;
